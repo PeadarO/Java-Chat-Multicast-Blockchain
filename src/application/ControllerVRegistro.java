@@ -17,15 +17,15 @@ public class ControllerVRegistro extends Controller {
 	@FXML
 	private Button btnCancelar;
 	@FXML
-	private TextField txtName;
-	@FXML
-	private TextField txtSurname;
+	private TextField txtNumber;
 	@FXML
 	private TextField txtUsername;
 	@FXML
 	private TextField txtPassword;
 	@FXML
 	private TextField txtConfirmPassword;
+	@FXML
+	private TextField txtName;
 
 	public Server getServer() {
 		return server;
@@ -42,9 +42,9 @@ public class ControllerVRegistro extends Controller {
 
 	public void clickRegistrarUsuario(ActionEvent event) {
 		try {
-			if (txtUsername.getText() != "" && txtPassword.getText() != "" && txtName.getText() != ""
-					&& txtSurname.getText() != "" && txtUsername.getText() != null && txtPassword.getText() != null
-					&& txtName.getText() != null && txtSurname.getText() != null) {
+			if (txtNumber.getText() != "0" && txtNumber.getText() != "" && txtUsername.getText() != ""
+					&& txtPassword.getText() != "" && txtName.getText() != "" && txtNumber.getText() != null
+					&& txtUsername.getText() != null && txtPassword.getText() != null && txtName.getText() != null) {
 
 				if (txtPassword.getText().equals(txtConfirmPassword.getText())) {
 					registrarUsuario();
@@ -63,8 +63,8 @@ public class ControllerVRegistro extends Controller {
 	public void registrarUsuario() throws SQLException {
 		if (!server.existeUsuario(txtUsername.getText())) {
 
-			server.registrarUsuario(txtUsername.getText(), txtPassword.getText(), txtName.getText(),
-					false);
+			server.registerUser(Integer.parseInt(txtNumber.getText()), txtUsername.getText(), txtPassword.getText(),
+					txtName.getText());
 		} else {
 			dialog(AlertType.INFORMATION, "Informacion", "Error",
 					"El usuario '" + txtUsername.getText() + "' no esta disponible");

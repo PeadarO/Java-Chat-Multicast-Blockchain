@@ -29,22 +29,16 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
 public class Server implements Interfaz, Remote {
-	private Connection conexione;
+	private Connection connection;
 	private File config;
 	private Properties properties;
 	private InputStream input;
 	private OutputStream output;
 	private boolean login;
-	private String correctUsername;
-	//protected HashMap<Integer, Contactos> listadobd;
-	private TableView tablaContactos;
-	private String name;
-	private String surname;
-	private int telephone;
-	private int movil;
+	private int correctNumber;
 
 	public Server() {
-		config = new File("src/configuracion.ini");
+		config = new File("src/configuration.ini");
 		properties = new Properties();
 		output = null;
 		login = false;
@@ -59,20 +53,20 @@ public class Server implements Interfaz, Remote {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		try {
 			Class.forName(driver);
-			conexione = DriverManager.getConnection(url, user, pass);
+			connection = DriverManager.getConnection(url, user, pass);
 		} catch (ClassNotFoundException e) {
-			System.out.println("ERROR: DRIVER ");
+			System.out.println("ERROR: DRIVER NOT FOUND ");
 			System.exit(-1);
 
 		} catch (SQLException e) {
-			System.out.println("ERROR: FALLO EN CONEXION DE BASE DE DATOS");
+			System.out.println("ERROR: CONNECTION FAILURE OF DATABASE");
 			System.exit(-1);
 		} catch (Exception e) {
-			System.out.println("ERROR: GENERAL");
+			System.out.println("ERROR: UNKNOWN");
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		return conexione;
+		return connection;
 	}
 
 	public String getProperty(String key) {
@@ -81,7 +75,7 @@ public class Server implements Interfaz, Remote {
 			input = new FileInputStream(config);
 			properties.load(input);
 		} catch (Exception e) {
-			System.out.println("FALLO EN LECTURA DE FICHERO.INI" + e);
+			System.out.println("CONFIGURATION READING FAILURE (.INI)" + e);
 		}
 		String property = properties.getProperty(key);
 		return property;
@@ -100,15 +94,16 @@ public class Server implements Interfaz, Remote {
 
 	// LOGIN-REGISTRO
 	@Override
-	public boolean registrarUsuario(String username, String password, String name, boolean status) {
+	public boolean registerUser(int number, String username, String password, String name) {
 		String query = "INSERT INTO users (username, password, name, surname) VALUES (?, ?, ?, ?)";
 		try {
-			PreparedStatement stmt = conexione.prepareStatement(query);
+			PreparedStatement stmt = connection.prepareStatement(query);
 
 			stmt.setString(1, username);
 			stmt.setString(2, password);
 			stmt.setString(3, name);
-			stmt.setBoolean(4, status);
+			// when register status = false
+			stmt.setBoolean(4, false);
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -120,7 +115,7 @@ public class Server implements Interfaz, Remote {
 	// Comprueba si existe un usuario
 	public boolean existeUsuario(String username) throws SQLException {
 		String query = "SELECT username FROM users WHERE username LIKE ?";
-		PreparedStatement stmt = conexione.prepareStatement(query);
+		PreparedStatement stmt = connection.prepareStatement(query);
 		stmt.setString(1, username);
 		ResultSet rset = stmt.executeQuery();
 		boolean exist = rset.next();
@@ -134,17 +129,16 @@ public class Server implements Interfaz, Remote {
 	}
 
 	@Override
-	public boolean modificarUsuario(String username, String password, String name, boolean status)
-			throws RemoteException {
+	public boolean updateUser(int number, String username, String password, String name) throws RemoteException {
 		boolean state;
 
-		String query = "UPDATE users SET password = ?, name = ?, surname = ?  WHERE username LIKE '" + username + "'";
+		String query = "UPDATE users SET password = ?, name = ?, surname = ?  WHERE number LIKE '" + number + "'";
 		try {
-			PreparedStatement stmt = conexione.prepareStatement(query);
+			PreparedStatement stmt = connection.prepareStatement(query);
 
 			stmt.setString(1, password);
 			stmt.setString(2, name);
-			stmt.setString(3, surname);
+
 			stmt.executeUpdate();
 			stmt.close();
 			state = true;
@@ -156,11 +150,11 @@ public class Server implements Interfaz, Remote {
 	}
 
 	@Override
-	public boolean borrarUsuario(String username) throws RemoteException {
+	public boolean deleteUser(int number) throws RemoteException {
 		try {
 			String query = "DELETE FROM users WHERE username LIKE ?";
-			PreparedStatement stmt = conexione.prepareStatement(query);
-			stmt.setString(1, username);
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, number);
 			stmt.executeUpdate();
 			stmt.close();
 			return true;
@@ -172,18 +166,18 @@ public class Server implements Interfaz, Remote {
 	}
 
 	@Override
-	public String iniciarSesion(String username, String password) {
-		correctUsername = " ";
+	public boolean login(int number, String password) {
+		correctNumber = 0;
 		String correctPassword = " ";
 
 		try {
-			String query = "SELECT username, password FROM users WHERE username = ?  AND password = ?";
-			PreparedStatement stmt = conexione.prepareStatement(query);
-			stmt.setString(1, username);
+			String query = "SELECT number, password FROM users WHERE number = ?  AND password = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, number);
 			stmt.setString(2, password);
 			ResultSet rset = stmt.executeQuery();
 			rset.next();
-			correctUsername = rset.getString(1);
+			correctNumber = rset.getInt(1);
 			correctPassword = rset.getString(2);
 			rset.close();
 			stmt.close();
@@ -191,11 +185,12 @@ public class Server implements Interfaz, Remote {
 			login = false;
 		}
 
-		login = correctUsername.equals(username) && correctPassword.equals(password);
+		login = correctNumber == number && correctPassword.equals(password);
 		if (login) {
-			return correctUsername.toString();
+			// status == true
+			return true;
 		} else {
-			return "Username o password incorrecto";
+			return false;
 		}
 
 	}
@@ -205,12 +200,11 @@ public class Server implements Interfaz, Remote {
 	}
 
 	public void logout() {
-		conexione = null;
+		connection = null;
 		login = false;
-		correctUsername = "";
+		correctNumber = 0;
 	}
 
-	// AGENDA-CONTACTOS
 	/**
 	 * Permite llenar una tabla con consultas que no requieran de una comprobacion,
 	 * como obtener todos los datos de una tabla, o hacer una busqueda
@@ -221,185 +215,6 @@ public class Server implements Interfaz, Remote {
 	 * @param data      El ObservableList que utiliza la tabla para obtener los
 	 *                  datos
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void leerContactos(String query, TableView tableView, ObservableList<ObservableList> data)
-			throws RemoteException {
-		// clear table
-		data.clear();
-		tableView.getColumns().clear();
-		tableView.getItems().clear();
-
-		try {
-			ResultSet rs = getConnection().createStatement().executeQuery(query);
-			// table column added dynamically
-			for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-				final int j = i;
-				TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-
-				col.setCellValueFactory(
-						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-								return new SimpleStringProperty(param.getValue().get(j).toString());
-							}
-						});
-
-				tableView.getColumns().addAll(col);
-
-				// data added to ObservableList
-				while (rs.next()) {
-					ObservableList<String> row = FXCollections.observableArrayList();
-					for (int z = 1; z <= rs.getMetaData().getColumnCount(); z++) {
-						row.add(rs.getString(z));
-					}
-					data.add(row);
-				}
-				// added to tableview
-				tableView.setItems(data);
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-	}
-
-	public void setTablaContactos(TableView<?> tableView) {
-		this.tablaContactos = tableView;
-	}
-	/*
-	@Override
-	public HashMap<Integer, Contactos> leerHashContactos() throws RemoteException {
-		listadobd = new HashMap<Integer, Contactos>();
-		Contactos contact;
-		int count = 0;
-		try {
-			String query = "SELECT * FROM contacts";
-			PreparedStatement stmt = conexione.prepareStatement(query);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				count++;
-				name = rs.getString(2);
-				surname = rs.getString(3);
-				telephone = rs.getInt(4);
-				movil = rs.getInt(5);
-				contact = new Contactos(count, name, surname, telephone, movil);
-				listadobd.put(count, contact);
-			}
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			e.printStackTrace();
-		}
-		return false;
-
-	}
-
-	public String insertarContacto(String name, String surname, int telephone, int movil, String ref_user) {
-		String result = null;
-		try {
-
-			HashMap<Integer, Contactos> listaadd;
-
-			try {
-				listaadd = leerHashContactos();
-
-				PreparedStatement stmt;
-				stmt = conexione.prepareStatement("SELECT * FROM contacts WHERE movil LIKE '" + movil + "'");
-				ResultSet rset = stmt.executeQuery();
-
-				while (rset.next()) {
-					for (Entry<Integer, Contactos> entry : listaadd.entrySet()) {
-						if (entry.getValue().getMovil() == movil) {
-							result = "Numero de movil repetido";
-
-						}
-					}
-				}
-				stmt = conexione
-						.prepareStatement("INSERT INTO contacts (name,surname,telephone,movil,ref_user) value ('" + name
-								+ "','" + surname + "','" + telephone + "','" + movil + "','" + ref_user + "')");
-				stmt.executeUpdate();
-				result = "Contacto correctamente introducido con el numero: " + movil;
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	@Override
-	public boolean modificarContacto(String name, String surname, int telephone, int movil, String ref_user) {
-		boolean state;
-		String query = "UPDATE contacts SET name = ?, surname = ?, telephone = ?, movil = ?, ref_user = ?  WHERE movil LIKE '"
-				+ movil + "' AND ref_user LIKE '" + ref_user + "'";
-		try {
-			PreparedStatement stmt = conexione.prepareStatement(query);
-
-			stmt.setString(1, name);
-			stmt.setString(2, surname);
-			stmt.setInt(3, telephone);
-			stmt.setInt(4, movil);
-			stmt.setString(5, ref_user);
-			stmt.executeUpdate();
-			stmt.close();
-			state = true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			state = false;
-		}
-		return state;
-	}
-
-	public boolean notexistMovil(int movil) throws SQLException {
-		String query = "SELECT movil FROM contacts WHERE movil LIKE ?";
-		PreparedStatement stmt = conexione.prepareStatement(query);
-		stmt.setInt(1, movil);
-		ResultSet rset = stmt.executeQuery();
-		boolean exist = rset.next();
-		rset.close();
-		stmt.close();
-		if (exist) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	@Override
-	public boolean borrarContacto(int movil, String ref_user) {
-		boolean state = false;
-		try {
-			if (notexistMovil(movil)) {
-				System.out.println("No existe el numero de movil en la base de datos");
-			} else {
-				String query = "DELETE FROM contacts WHERE movil LIKE ('" + movil + "')";
-				PreparedStatement stmt = conexione.prepareStatement(query);
-				stmt.executeUpdate();
-				stmt.close();
-				state = true;
-			}
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return state;
-	}
-*/
-	@Override
-	public boolean borrarTodo(String query) {
-		boolean state = false;
-		PreparedStatement stmt;
-		try {
-			stmt = conexione.prepareStatement(query);
-			stmt.executeUpdate();
-			state = true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return state;
-	}
 
 	// MAIN
 	public static void main(String[] args) {

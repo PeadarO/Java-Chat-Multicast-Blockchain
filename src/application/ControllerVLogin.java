@@ -30,10 +30,10 @@ public class ControllerVLogin extends Controller {
 	}
 
 	public void clickLogin(ActionEvent event) {
-		server.iniciarSesion(txtUsername.getText(), txtPassword.getText());
+		server.login(Integer.parseInt(txtUsername.getText()), txtPassword.getText());
 		if (server.isLogin()) {
 			getusernameLogged(txtUsername.getText());
-			mostrarVentana(event, (Node) event.getSource(), "Agenda.fxml", "Agenda de Contactos", false, true, -1);
+			mostrarVentana(event, (Node) event.getSource(), "App.fxml", "Chat Cifrado", false, true, -1);
 		} else {
 			dialog(AlertType.INFORMATION, "Informacion", "Error", "Usuario o contraseña incorrectos");
 		}

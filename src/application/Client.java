@@ -37,22 +37,21 @@ public class Client extends Application {
 	}
 
 	public static void main(String[] args) {
-		Interfaz agenda = null;
+		Interfaz chat = null;
 		try {
-			System.out.println("Localizando el registro de objetos remotos");
 			Registry registry = LocateRegistry.getRegistry("localhost", 5557);
 			System.out.println("Obteniendo el stub del objeto remoto");
-			agenda = (Interfaz) registry.lookup("Chat");
+			chat = (Interfaz) registry.lookup("Chat");
 		} catch (Exception e) {
 			System.out.println("---------------------------------------");
-			System.out.println("No se ha podido conectar con el servidor");
+			System.out.println("SERVIDOR NO ENCONTRADO");
 			System.exit(-1);
 		}
-		if (agenda != null) {
+		if (chat != null) {
 			System.out.println("ABRIENDO APLICACION");
 			// lanzamos aplicacion visual
 			launch(args);
-			System.out.println("Agenda cerrada");
+			System.out.println("Java chat cerrado");
 
 		}
 	}
