@@ -99,22 +99,16 @@ public class Server implements Interfaz, Remote {
 	public boolean registerUser(int number, String username, String password, String name) {
 		String query = "INSERT INTO users (username, password, name, surname) VALUES (?, ?, ?, ?)";
 		try {
-			// * * * * * CIPHER * * * * * //
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			byte[] pwd = password.getBytes();
-			md.update(pwd);
-			byte[] cipherPwd = md.digest();
-			
 			PreparedStatement stmt = connection.prepareStatement(query);
 
 			stmt.setString(1, username);
-			stmt.setString(2, new String(cipherPwd));
+			stmt.setString(2, cipher(password));
 			stmt.setString(3, name);
 			// when register status = false
 			stmt.setBoolean(4, false);
 			stmt.executeUpdate();
 			stmt.close();
-		} catch (SQLException | NoSuchAlgorithmException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -182,18 +176,18 @@ public class Server implements Interfaz, Remote {
 			String query = "SELECT number, password FROM users WHERE number = ?  AND password = ?";
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setInt(1, number);
-			stmt.setString(2, password);
+			stmt.setString(2, cipher(password));
 			ResultSet rset = stmt.executeQuery();
 			rset.next();
 			correctNumber = rset.getInt(1);
 			correctPassword = rset.getString(2);
 			rset.close();
 			stmt.close();
-		} catch (SQLException s) {
+		} catch (SQLException e) {
 			login = false;
 		}
 
-		login = correctNumber == number && correctPassword.equals(password);
+		login = correctNumber == number && correctPassword.equals(cipher(password));
 		if (login) {
 			// status == true
 			return true;
@@ -201,6 +195,23 @@ public class Server implements Interfaz, Remote {
 			return false;
 		}
 
+	}
+
+	private String cipher(String password) {
+		MessageDigest md;
+		String strCipherPwd = "";
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+			byte[] pwd = password.getBytes();
+			md.update(pwd);
+			byte[] cipherPwd = md.digest();
+			strCipherPwd = new String(cipherPwd);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return strCipherPwd;
 	}
 
 	public boolean isLogin() {
