@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -97,16 +99,22 @@ public class Server implements Interfaz, Remote {
 	public boolean registerUser(int number, String username, String password, String name) {
 		String query = "INSERT INTO users (username, password, name, surname) VALUES (?, ?, ?, ?)";
 		try {
+			// * * * * * CIPHER * * * * * //
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] pwd = password.getBytes();
+			md.update(pwd);
+			byte[] cipherPwd = md.digest();
+			
 			PreparedStatement stmt = connection.prepareStatement(query);
 
 			stmt.setString(1, username);
-			stmt.setString(2, password);
+			stmt.setString(2, new String(cipherPwd));
 			stmt.setString(3, name);
 			// when register status = false
 			stmt.setBoolean(4, false);
 			stmt.executeUpdate();
 			stmt.close();
-		} catch (SQLException e) {
+		} catch (SQLException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 		return false;
