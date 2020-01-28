@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="544.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControllerVRegistro">
+<AnchorPane id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="544.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerRegistro">
 	<children>
 		<Label fx:id="lblResult" alignment="CENTER" contentDisplay="CENTER" layoutX="43.0" layoutY="382.0" opacity="0.5" prefHeight="21.0" prefWidth="421.0" text="TODOS LOS CAMPOS SON OBLIGATORIOS *" textAlignment="CENTER" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" />
       <AnchorPane layoutX="45.0" layoutY="35.0" prefHeight="337.0" prefWidth="455.0" style="-fx-background-color: white;" styleClass="anchorLogin" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="40.0">

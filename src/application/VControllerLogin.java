@@ -9,10 +9,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import server.Server;
 
-public class ControllerVLogin extends Controller {
+public class VControllerLogin extends Controller {
 	private Server server;
 	@FXML
-	private TextField txtUsername;
+	private TextField txtNumber;
 	@FXML
 	private TextField txtPassword;
 	@FXML
@@ -20,7 +20,7 @@ public class ControllerVLogin extends Controller {
 	@FXML
 	private Button btnRegistrarUsuario;
 
-	public ControllerVLogin() {
+	public VControllerLogin() {
 		Server server = new Server();
 		this.server = server;
 	}
@@ -30,9 +30,9 @@ public class ControllerVLogin extends Controller {
 	}
 
 	public void clickLogin(ActionEvent event) {
-		server.login(Integer.parseInt(txtUsername.getText()), txtPassword.getText());
+		server.login(Integer.parseInt(txtNumber.getText()), txtPassword.getText());
 		if (server.isLogin()) {
-			getusernameLogged(txtUsername.getText());
+			getusernameLogged(txtNumber.getText());
 			mostrarVentana(event, (Node) event.getSource(), "App.fxml", "Chat Cifrado", false, true, -1);
 		} else {
 			dialog(AlertType.INFORMATION, "Informacion", "Error", "Usuario o contraseña incorrectos");

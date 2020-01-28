@@ -97,15 +97,15 @@ public class Server implements Interfaz, Remote {
 	// LOGIN-REGISTRO
 	@Override
 	public boolean registerUser(int number, String username, String password, String name) {
-		String query = "INSERT INTO users (username, password, name, surname) VALUES (?, ?, ?, ?)";
+		String query = "INSERT INTO users (number,username, password, name) VALUES (?, ?, ?, ?,?)";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
-
-			stmt.setString(1, username);
-			stmt.setString(2, cipher(password));
-			stmt.setString(3, name);
+			stmt.setInt(1, number);
+			stmt.setString(2, username);
+			stmt.setString(3, cipher(password));
+			stmt.setString(4, name);
 			// when register status = false
-			stmt.setBoolean(4, false);
+			stmt.setBoolean(5, false);
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -115,10 +115,10 @@ public class Server implements Interfaz, Remote {
 	}
 
 	// Comprueba si existe un usuario
-	public boolean existeUsuario(String username) throws SQLException {
-		String query = "SELECT username FROM users WHERE username LIKE ?";
+	public boolean existeUsuario(int number) throws SQLException {
+		String query = "SELECT number FROM users WHERE number LIKE ?";
 		PreparedStatement stmt = connection.prepareStatement(query);
-		stmt.setString(1, username);
+		stmt.setInt(1, number);
 		ResultSet rset = stmt.executeQuery();
 		boolean exist = rset.next();
 		rset.close();
@@ -134,13 +134,12 @@ public class Server implements Interfaz, Remote {
 	public boolean updateUser(int number, String username, String password, String name) throws RemoteException {
 		boolean state;
 
-		String query = "UPDATE users SET password = ?, name = ?, surname = ?  WHERE number LIKE '" + number + "'";
+		String query = "UPDATE users SET password = ?, name = ? WHERE number LIKE '" + number + "'";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 
 			stmt.setString(1, password);
 			stmt.setString(2, name);
-
 			stmt.executeUpdate();
 			stmt.close();
 			state = true;
@@ -154,7 +153,7 @@ public class Server implements Interfaz, Remote {
 	@Override
 	public boolean deleteUser(int number) throws RemoteException {
 		try {
-			String query = "DELETE FROM users WHERE username LIKE ?";
+			String query = "DELETE FROM users WHERE number LIKE ?";
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setInt(1, number);
 			stmt.executeUpdate();
@@ -223,17 +222,6 @@ public class Server implements Interfaz, Remote {
 		login = false;
 		correctNumber = 0;
 	}
-
-	/**
-	 * Permite llenar una tabla con consultas que no requieran de una comprobacion,
-	 * como obtener todos los datos de una tabla, o hacer una busqueda
-	 * 
-	 * @param sql       La consulta con la que se llena la tabla
-	 * @param tableView La tabla que va a ser completada con los datos de la
-	 *                  consulta
-	 * @param data      El ObservableList que utiliza la tabla para obtener los
-	 *                  datos
-	 */
 
 	// MAIN
 	public static void main(String[] args) {

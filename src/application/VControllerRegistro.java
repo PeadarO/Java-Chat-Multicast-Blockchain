@@ -10,7 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import server.Server;
 
-public class ControllerVRegistro extends Controller {
+public class VControllerRegistro extends Controller {
 	private Server server;
 	@FXML
 	private Button btnRegistrar;
@@ -35,7 +35,7 @@ public class ControllerVRegistro extends Controller {
 		this.server = server;
 	}
 
-	public ControllerVRegistro() {
+	public VControllerRegistro() {
 		Server server = new Server();
 		this.server = server;
 	}
@@ -61,7 +61,7 @@ public class ControllerVRegistro extends Controller {
 	}
 
 	public void registrarUsuario() throws SQLException {
-		if (!server.existeUsuario(txtUsername.getText())) {
+		if (!server.existeUsuario(Integer.parseInt(txtNumber.getText()))) {
 
 			server.registerUser(Integer.parseInt(txtNumber.getText()), txtUsername.getText(), txtPassword.getText(),
 					txtName.getText());
