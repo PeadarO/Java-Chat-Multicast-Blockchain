@@ -2,28 +2,20 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="544.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerLogin">
-	<children>
-      <AnchorPane layoutX="45.0" layoutY="172.0" prefHeight="200.0" prefWidth="455.0" style="-fx-background-color: white;" styleClass="anchorLogin">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerLogin">
+   <children>
+      <Pane layoutX="158.0" layoutY="28.0" prefHeight="333.0" prefWidth="276.0">
          <children>
-      		<Label layoutX="86.0" layoutY="49.0" text="Usuario:" />
-      		<Label layoutX="86.0" layoutY="101.0" text="Clave:" />
-      		<TextField fx:id="txtUsername" layoutX="174.0" layoutY="42.0" prefHeight="31.0" prefWidth="202.0" />
-      		<PasswordField fx:id="txtPassword" layoutX="174.0" layoutY="94.0" prefHeight="31.0" prefWidth="202.0" />
-      		<Button fx:id="btnLogin" layoutX="227.0" layoutY="144.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="31.0" prefWidth="149.0" styleClass="buttonVerde" stylesheets="@../application/application.css" text="Login" textFill="WHITE" />
-            <Button fx:id="btnRegistrarUsuario" layoutX="79.0" layoutY="144.0" mnemonicParsing="false" onAction="#clickRegistro" prefHeight="31.0" prefWidth="101.0" styleClass="buttonAmarillo" stylesheets="@../application/application.css" text="Registro" textFill="WHITE" />
+            <Label layoutX="12.0" layoutY="141.0" text="Nickname:" />
+            <Label layoutX="14.0" layoutY="180.0" text="Password" />
+            <TextField fx:id="txtNumber" layoutX="114.0" layoutY="135.0" prefHeight="23.0" prefWidth="120.0" style="-fx-focus-traversable: true;" styleClass="Textfield" stylesheets="@SecureApp.css" />
+            <TextField fx:id="txtPassword" layoutX="114.0" layoutY="174.0" prefHeight="29.0" prefWidth="120.0" styleClass="Textfield" stylesheets="@SecureApp.css" />
+            <Button fx:id="btnRegistrarUsuario" layoutX="12.0" layoutY="240.0" mnemonicParsing="false" onAction="#clickRegistro" prefHeight="29.0" prefWidth="91.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Registrarse" />
+            <Button fx:id="btnLogin" layoutX="128.0" layoutY="240.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="29.0" prefWidth="91.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" text="Login" />
          </children>
-      </AnchorPane>
-      <ImageView fitHeight="125.0" fitWidth="455.0" layoutX="45.0" layoutY="32.0">
-         <image>
-            <Image url="@../../Resources/logo2.png" />
-         </image>
-      </ImageView>
-	</children>
-</AnchorPane>
+      </Pane>
+   </children>
+</Pane>

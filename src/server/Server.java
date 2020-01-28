@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -18,17 +19,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Properties;
-import java.util.Map.Entry;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.util.Callback;
 
 public class Server implements Interfaz, Remote {
 	private Connection connection;
@@ -97,7 +88,7 @@ public class Server implements Interfaz, Remote {
 	// LOGIN-REGISTRO
 	@Override
 	public boolean registerUser(int number, String username, String password, String name) {
-		String query = "INSERT INTO users (number,username, password, name) VALUES (?, ?, ?, ?,?)";
+		String query = "INSERT INTO users (number,username, password, name,status) VALUES (?, ?, ?, ?,?)";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setInt(1, number);
@@ -201,16 +192,25 @@ public class Server implements Interfaz, Remote {
 		String strCipherPwd = "";
 		try {
 			md = MessageDigest.getInstance("SHA-256");
-			byte[] pwd = password.getBytes();
-			md.update(pwd);
-			byte[] cipherPwd = md.digest();
-			strCipherPwd = new String(cipherPwd);
+			byte[] cipherPwd = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+			strCipherPwd = bytesToHex(cipherPwd);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return strCipherPwd;
+	}
+
+	private String bytesToHex(byte[] hashInBytes) {
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < hashInBytes.length; i++) {
+			sb.append(Integer.toString((hashInBytes[i] & 0xff) + 0x100, 16).substring(1));
+		}
+		return sb.toString();
+
 	}
 
 	public boolean isLogin() {

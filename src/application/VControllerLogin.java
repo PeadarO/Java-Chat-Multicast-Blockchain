@@ -32,8 +32,10 @@ public class VControllerLogin extends Controller {
 	public void clickLogin(ActionEvent event) {
 		server.login(Integer.parseInt(txtNumber.getText()), txtPassword.getText());
 		if (server.isLogin()) {
-			getusernameLogged(txtNumber.getText());
-			mostrarVentana(event, (Node) event.getSource(), "App.fxml", "Chat Cifrado", false, true, -1);
+			System.out.println("LOGEADO");
+			// getusernameLogged(txtNumber.getText());
+			// mostrarVentana(event, (Node) event.getSource(), "App.fxml", "Chat Cifrado",
+			// false, true, -1);
 		} else {
 			dialog(AlertType.INFORMATION, "Informacion", "Error", "Usuario o contraseña incorrectos");
 		}
