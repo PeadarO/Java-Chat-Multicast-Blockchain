@@ -51,6 +51,11 @@ public class VControllerLogin extends Controller {
 	}
 
 	public void clickRegistro(ActionEvent event) {
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Registro.fxml", "Registro");
+		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Registro.fxml", "Register");
+	}
+
+	public void clickForgetPassword(ActionEvent event) {
+		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ForgetPassword.fxml",
+				"Forget Password");
 	}
 }
