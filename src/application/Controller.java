@@ -137,8 +137,4 @@ public class Controller {
 		userlogged = myusername;
 		return userlogged;
 	}
-
-	public String getId() {
-		return userlogged;
-	}
 }

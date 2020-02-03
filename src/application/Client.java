@@ -26,7 +26,7 @@ public class Client extends Application {
             rootLayout = (Pane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
-
+            scene.getStylesheets().add(getClass().getResource("SecureApp.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.getIcons().add(new Image("file:Resources/logo.png"));

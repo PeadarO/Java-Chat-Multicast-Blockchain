@@ -1,6 +1,91 @@
 .Textfield {
-
--fx-background-color: #ffffff; 
--fx-border-color: #d3d3d3;
+	-fx-background-color: #ffffff; 
+	-fx-border-color: #d3d3d3;
     
+}
+#panelLogin{
+	-fx-background-image:  url('../../Resources/imagenFondo.jpeg');
+	-fx-background-size: cover, auto;
+}
+
+#panelRegistro{
+	-fx-background-image: url("../../Resources/registro.jpg");
+	-fx-background-size: cover, auto;
+}
+
+.button {
+	-fx-border-color:  #000000;
+	-fx-background-color: 
+        #c3c4c4,
+        linear-gradient(#d6d6d6 50.0%, white 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #e6e6e6 45.0%, rgba(230.0,230.0,230.0,0.0) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian, rgba(0.0, 0.0, 0.0, 0.1), 10.0, 0.5, 0.0, 0.0 );
+}
+
+.button:hover {
+	-fx-background-color: 
+        #c3c4c4,
+        linear-gradient(rgb(195.0, 184.0, 184.0) 50.0%, #d6d6d6 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #e6e6e6 45.0%, rgba(230.0,230.0,230.0,0.0) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+}
+
+.buttonAmarillo {
+	-fx-background-color: 
+        #ff971d,
+        linear-gradient(#ff971d 50.0%, white 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #ff971d 45.0%, rgba(230.0,230.0,230.0,0.0) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian, rgba(0.0, 0.0, 0.0, 0.1), 10.0, 0.5, 0.0, 0.0 );
+}
+
+.buttonAmarillo:hover {
+	-fx-background-color: 
+        #f58e15,
+        linear-gradient(ff7315 50.0%, #f58e15 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #f58e15 45.0%, rgba(230.0,230.0,230.0,0.0) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+}
+
+.buttonVerde {
+	-fx-background-color: 
+        rgb(35.0, 184.0, 34.0),
+        linear-gradient(rgb(45.0, 214.0, 44.0) 50.0%,rgb(205.0, 254.0, 204.0) 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, rgb(50.0, 200.0,50.0) 45.0%, rgba(20.0,120.0,20.0,0.55) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian, rgba(0.0, 0.0, 0.0, 0.15), 10.0, 0.5, 0.0, 0.0 );
+}
+
+.buttonVerde:hover {
+	-fx-background-color: 
+        #c3c4c4,
+        linear-gradient(rgb(25.0, 194.0, 24.0) 50.0%, rgb(205.0, 254.0, 204.0), rgb(45.0, 184.0, 44.0) 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, rgb(25.0, 174.0, 24.0) 45.0%, rgba(20.0,120.0,20.0,0.65) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+}
+
+.buttonRojo {
+	-fx-background-color: 
+        rgb(244.0, 45.0, 44.0),
+        linear-gradient(rgb(254.0, 35.0, 34.0) 50.0%, rgb(254.0, 175.0, 174.0) 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, rgb(254.0, 65.0, 64.0) 45.0%, rgba(160.0,20.0,20.0,0.4) 50.0%);
+   	-fx-background-insets: 0.0,1.0,1.0;
+   	-fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian, rgba(0.0, 0.0, 0.0, 0.1), 10.0, 0.5, 0.0, 0.0 );
+}
+
+.buttonRojo:hover {
+	-fx-background-color: 
+        rgb(244.0, 45.0, 44.0),
+        linear-gradient(rgb(254.0, 35.0, 34.0) 50.0%, rgb(254.0, 175.0, 174.0) 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, rgb(254.0, 65.0, 64.0) 45.0%, rgba(160.0,20.0,20.0,0.7) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
 }
