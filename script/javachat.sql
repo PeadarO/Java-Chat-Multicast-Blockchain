@@ -44,6 +44,15 @@ CREATE TABLE IF NOT EXISTS `peticiones` (
 --
 
 DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `resetPassword`;
+
+
+CREATE TABLE IF NOT EXISTS `resetPassword`(
+ `number` int(9) NOT NULL,
+ `codigo` varchar(25) NOT NULL
+);
+select * from resetPassword;
+
 CREATE TABLE IF NOT EXISTS `users` (
   `number` int(9) NOT NULL,
   `username` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
@@ -56,6 +65,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Volcado de datos para la tabla `users`
 --
+ALTER TABLE resetPassword
+ADD FOREIGN KEY (number) REFERENCES users(number);
+
+INSERT INTO `resetPassword` (`number`, `codigo`) VALUES
+(123, 'hola');
+
+Update users inner join resetPassword  on users.number = resetPassword.number set users.password = 'prueba' where resetPassword.codigo ='hola'
 
 INSERT INTO `users` (`number`, `username`, `password`, `name`, `status`) VALUES
 (123, 'w', '50e721e49c013f00c62cf59f2163542a9d8df02464efeb615d31051b0fddc326', 'w', 0),
