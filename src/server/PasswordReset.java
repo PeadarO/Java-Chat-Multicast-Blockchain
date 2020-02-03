@@ -46,7 +46,7 @@ public class PasswordReset {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("canarygo1@gmail.com", "fuerteventura99");
+                return new PasswordAuthentication("securechatUtad", "utadsecure");
 
             }
 

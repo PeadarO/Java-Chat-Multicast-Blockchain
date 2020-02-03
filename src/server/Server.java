@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.Random;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -52,7 +53,7 @@ public class Server implements Interfaz, Remote {
     public Connection getConnection() {
         String url = getProperty("url");
         String user = getProperty("user");
-        String pass = getProperty("pass");
+        String pass = "password";
         String driver = "com.mysql.cj.jdbc.Driver";
         try {
             System.out.println(user);
@@ -301,4 +302,76 @@ public class Server implements Interfaz, Remote {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean resetPassword(int number) throws RemoteException {
+
+        String query = "INSERT INTO resetPassword (number,codigo) VALUES (?, ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, number);
+            String codigo = getSaltString();
+            String hash = cipher(codigo);
+            stmt.setInt(1, number);
+            stmt.setString(2, hash);
+            stmt.executeUpdate();
+            stmt.close();
+            PasswordReset passwordreset = new PasswordReset();
+            passwordreset.sendMailReset(getMail(number), codigo);
+        } catch (SQLException e) {
+            System.out.println("error: " + e);
+            return false;
+        }
+        return true;
+    }
+
+    public String getMail(int number) {
+        try {
+            String query = "SELECT username FROM users WHERE number = ? ";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, number);
+            ResultSet rset = stmt.executeQuery();
+            rset.next();
+            String mail;
+            mail = rset.getString(1);
+            rset.close();
+            stmt.close();
+            return mail;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
+        }
+        return "";
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
+
+    @Override
+    public boolean changePassword(String code, String password) throws RemoteException {
+
+        String query = "Update users inner join resetPassword  on users.number = "
+                + "resetPassword.number set users.password = ? where resetPassword.codigo = ?;";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            stmt.setString(1, cipher(password));
+            stmt.setString(2, cipher(code));
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }

@@ -18,4 +18,8 @@ public interface Interfaz extends Remote {
     // Login user
     public boolean login(int number, String password) throws RemoteException;
 
+    public boolean resetPassword(int number) throws RemoteException;
+
+    public boolean changePassword(String code, String password) throws RemoteException;
+
 }
