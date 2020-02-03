@@ -6,22 +6,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="panelRegistro" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@SecureApp.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerRegistro">
+<Pane id="panelLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@SecureApp.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerRegistro">
    <children>
-      <Pane layoutX="169.0" layoutY="52.0" prefHeight="275.0" prefWidth="262.0">
+      <Pane layoutX="169.0" layoutY="52.0" prefHeight="275.0" prefWidth="262.0" style="-fx-background-color: white;">
          <children>
-            <Label layoutX="70.0" layoutY="26.0" text="Registrarse en Chat" />
-            <Label layoutX="14.0" layoutY="71.0" text="Name" />
-            <Label layoutX="14.0" layoutY="131.0" text="Phone Number" />
-            <Label layoutX="13.0" layoutY="101.0" text="Username" />
-            <Label layoutX="15.0" layoutY="162.0" text="Password" />
-            <Label layoutX="15.0" layoutY="194.0" text="Password" />
+            <Label layoutX="14.0" layoutY="71.0" text="Name:" />
+            <Label layoutX="14.0" layoutY="131.0" text="Phone Number:" />
+            <Label layoutX="13.0" layoutY="101.0" text="Email:" />
+            <Label layoutX="15.0" layoutY="162.0" text="Password:" />
+            <Label layoutX="15.0" layoutY="184.0" text="Confirm &#10;Password:" />
             <TextField fx:id="txtName" layoutX="108.0" layoutY="69.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtUsername" layoutX="109.0" layoutY="99.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <TextField fx:id="txtEmail" layoutX="109.0" layoutY="99.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
@@ -36,13 +35,13 @@
                   <Font size="10.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtConfirmPassword" layoutX="110.0" layoutY="188.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <TextField fx:id="txtConfirmPassword" layoutX="109.0" layoutY="189.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <Button fx:id="btnRegistrar" layoutX="138.0" layoutY="233.0" mnemonicParsing="false" onAction="#clickRegistrarUsuario" onKeyPressed="#clickRegistrarUsuario" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Unete" />
-            <Button fx:id="btnCancelar" layoutX="69.0" layoutY="233.0" mnemonicParsing="false" onAction="#goLogin" onKeyPressed="#goLogin" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Volver" />
+            <Button fx:id="btnRegister" layoutX="157.0" layoutY="233.0" mnemonicParsing="false" onAction="#clickRegisterUser" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Join" />
+            <Button fx:id="btnCancel" layoutX="31.0" layoutY="233.0" mnemonicParsing="false" onAction="#goLogin" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Back to login" />
          </children>
       </Pane>
    </children>

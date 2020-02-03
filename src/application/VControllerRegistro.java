@@ -13,13 +13,13 @@ import server.Server;
 public class VControllerRegistro extends Controller {
 	private Server server;
 	@FXML
-	private Button btnRegistrar;
+	private Button btnRegister;
 	@FXML
-	private Button btnCancelar;
+	private Button btnCancel;
 	@FXML
 	private TextField txtNumber;
 	@FXML
-	private TextField txtUsername;
+	private TextField txtEmail;
 	@FXML
 	private TextField txtPassword;
 	@FXML
@@ -40,39 +40,38 @@ public class VControllerRegistro extends Controller {
 		this.server = server;
 	}
 
-	public void clickRegistrarUsuario(ActionEvent event) {
+	public void clickRegisterUser(ActionEvent event) {
 		try {
-			if (txtNumber.getText() != "0" && txtNumber.getText() != "" && txtUsername.getText() != ""
+			if (txtNumber.getText() != "0" && txtNumber.getText() != "" && txtEmail.getText() != ""
 					&& txtPassword.getText() != "" && txtName.getText() != "" && txtNumber.getText() != null
-					&& txtUsername.getText() != null && txtPassword.getText() != null && txtName.getText() != null) {
+					&& txtEmail.getText() != null && txtPassword.getText() != null && txtName.getText() != null) {
 
 				if (txtPassword.getText().equals(txtConfirmPassword.getText())) {
-					registrarUsuario();
-					dialog(AlertType.INFORMATION, "Informacion", txtUsername.getText(), "Usuario registrado con exito");
+					newUser();
+					dialog(AlertType.INFORMATION, "Information", txtEmail.getText(), "Successful registered ");
 					goLogin(event);
 
 				} else {
-					dialog(AlertType.INFORMATION, "Informacion", "Error", "Las contraseñas no coinciden");
+					dialog(AlertType.INFORMATION, "Information", "Error", "The passwords do not match");
 				}
 			}
 		} catch (Exception e) {
-			dialog(AlertType.INFORMATION, "Informacion", "Error", "Ha habido un error en el registro del usuario");
+			dialog(AlertType.INFORMATION, "Information", "Error", "Ha habido un error en el registro del usuario");
 		}
 	}
 
-	public void registrarUsuario() throws SQLException {
+	public void newUser() throws SQLException {
 		if (!server.existeUsuario(Integer.parseInt(txtNumber.getText()))) {
 
-			server.registerUser(Integer.parseInt(txtNumber.getText()), txtUsername.getText(), txtPassword.getText(),
+			server.registerUser(Integer.parseInt(txtNumber.getText()), txtEmail.getText(), txtPassword.getText(),
 					txtName.getText());
 		} else {
-			dialog(AlertType.INFORMATION, "Informacion", "Error",
-					"El usuario '" + txtUsername.getText() + "' no esta disponible");
+			dialog(AlertType.INFORMATION, "Information", "Error",
+					"This number: '" + txtNumber.getText() + "' is not available");
 		}
 	}
 
 	public void goLogin(ActionEvent event) {
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml",
-				"Iniciar sesion");
+		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml", "Login");
 	}
 }

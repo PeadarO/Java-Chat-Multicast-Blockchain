@@ -3,14 +3,19 @@
 	-fx-border-color: #d3d3d3;
     
 }
+
 #panelLogin{
 	-fx-background-image:  url('../../Resources/imagenFondo.jpeg');
 	-fx-background-size: cover, auto;
 }
 
 #panelRegistro{
-	-fx-background-image: url("../../Resources/registro.jpg");
+	-fx-background-image: url('../../Resources/registro.jpg');
 	-fx-background-size: cover, auto;
+}
+
+#logo{
+	-fx-background-image: url('../../Resources/logo.png');
 }
 
 .button {
@@ -67,6 +72,25 @@
         #c3c4c4,
         linear-gradient(rgb(25.0, 194.0, 24.0) 50.0%, rgb(205.0, 254.0, 204.0), rgb(45.0, 184.0, 44.0) 100.0%),
         radial-gradient(center 50.0% -40.0%, radius 200.0%, rgb(25.0, 174.0, 24.0) 45.0%, rgba(20.0,120.0,20.0,0.65) 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+}
+
+.buttonAzul {
+	-fx-background-color: 
+        #0343ea,
+        linear-gradient(#27b3f6 50.0%,#1062f6 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #077dd3 45.0%, #05558f 50.0%);
+    -fx-background-insets: 0.0,1.0,1.0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( gaussian, rgba(0.0, 0.0, 0.0, 0.15), 10.0, 0.5, 0.0, 0.0 );
+}
+
+.buttonAzul:hover {
+	-fx-background-color: 
+        #27b3f6,
+        linear-gradient(rgb(25.0, 194.0, 24.0) 50.0%, rgb(205.0, 254.0, 204.0), rgb(45.0, 184.0, 44.0) 100.0%),
+        radial-gradient(center 50.0% -40.0%, radius 200.0%, #0f78ff 45.0%, #4a8aff 50.0%);
     -fx-background-insets: 0.0,1.0,1.0;
     -fx-text-fill: black;
 }

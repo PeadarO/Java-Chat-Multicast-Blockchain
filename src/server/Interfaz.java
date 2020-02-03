@@ -7,12 +7,10 @@ import java.util.HashMap;
 public interface Interfaz extends Remote {
 
 	// Register user
-	public boolean registerUser(int number,String username, String password, String name)
-			throws RemoteException;
+	public boolean registerUser(int number, String username, String password, String name) throws RemoteException;
 
 	// Modificar user
-	public boolean updateUser(int number,String username, String password, String name)
-			throws RemoteException;
+	public boolean updateUser(int number, String username, String password, String name) throws RemoteException;
 
 	// Delete user
 	public boolean deleteUser(int number) throws RemoteException;

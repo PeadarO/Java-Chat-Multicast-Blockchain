@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
 <Pane id="panelLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@SecureApp.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerLogin">
@@ -11,14 +12,15 @@
       <Pane layoutX="158.0" layoutY="28.0" prefHeight="333.0" prefWidth="276.0" style="-fx-background-color: white;">
          <children>
             <Label layoutX="12.0" layoutY="141.0" text="Phone Number:" />
-            <Label layoutX="14.0" layoutY="180.0" text="Password" />
+            <Label layoutX="14.0" layoutY="180.0" text="Password:" />
             <TextField fx:id="txtNumber" layoutX="114.0" layoutY="135.0" prefHeight="23.0" prefWidth="120.0" style="-fx-focus-traversable: true;" styleClass="Textfield" stylesheets="@SecureApp.css" />
             <TextField fx:id="txtPassword" layoutX="114.0" layoutY="174.0" prefHeight="29.0" prefWidth="120.0" styleClass="Textfield" stylesheets="@SecureApp.css" />
-            <Button fx:id="btnRegistrarUsuario" layoutX="12.0" layoutY="240.0" mnemonicParsing="false" onAction="#clickRegistro" prefHeight="29.0" prefWidth="91.0" styleClass="buttonAmarillo" stylesheets="@SecureApp.css" text="Registrarse" textAlignment="CENTER" />
+            <Button fx:id="btnRegistrarUsuario" layoutX="12.0" layoutY="240.0" mnemonicParsing="false" onAction="#clickRegistro" prefHeight="29.0" prefWidth="91.0" styleClass="buttonAmarillo" stylesheets="@SecureApp.css" text="Sign up" textAlignment="CENTER" />
             <Button fx:id="btnLogin" layoutX="128.0" layoutY="240.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="29.0" prefWidth="91.0" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Login" textAlignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
+            <ImageView id="logo" fitHeight="68.0" fitWidth="91.0" layoutX="93.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
    </children>
