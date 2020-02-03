@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-01-2020 a las 12:03:03
+-- Tiempo de generación: 03-02-2020 a las 19:48:20
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -45,12 +45,22 @@ CREATE TABLE IF NOT EXISTS `peticiones` (
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
+  `number` int(9) NOT NULL,
   `username` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
-  PRIMARY KEY (`username`)
+  PRIMARY KEY (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`number`, `username`, `password`, `name`, `status`) VALUES
+(123, 'w', '50e721e49c013f00c62cf59f2163542a9d8df02464efeb615d31051b0fddc326', 'w', 0),
+(987, 'mic', '224948ca810fc2bc9e3d80c0b1129fe2487fa4e307961001ab8443db82f7bb69', 'mic', 0),
+(4321, 'we', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'we', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
