@@ -80,7 +80,6 @@ public class VControllerUser extends Controller {
 			server.deleteUser(Integer.parseInt(getId()));
 			Stage stage = (Stage) btnSave.getScene().getWindow();
 			stage.close();
-			// server.de("DELETE FROM contacts WHERE ref_user LIKE '"+getId()+"'");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

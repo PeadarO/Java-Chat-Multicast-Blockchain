@@ -27,6 +27,7 @@
 					</image>
 				</ImageView>
             <AnchorPane id="subListado" layoutX="198.0" layoutY="55.0" prefHeight="4.0" prefWidth="315.0" stylesheets="@../application/application.css" />
+            <Button fx:id="btnProfile" layoutX="593.0" layoutY="22.0" mnemonicParsing="false" onAction="#clickProfile" prefHeight="27.0" prefWidth="98.0" styleClass="buttonAmarillo" stylesheets="@SecureApp.css" text="Profile" />
 			</children>
 		</Pane>
 	</top>
@@ -71,8 +72,7 @@
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="btnProfile" layoutX="581.0" layoutY="501.0" mnemonicParsing="false" onAction="#clickProfile" prefHeight="27.0" prefWidth="125.0" styleClass="buttonAmarillo" stylesheets="@SecureApp.css" text="Profile" />
-            <Button fx:id="btnLogout" layoutX="578.0" layoutY="606.0" mnemonicParsing="false" onAction="#clickLogOut" prefHeight="25.0" prefWidth="128.0" text="LOGOUT" />
+            <Button fx:id="btnLogout" layoutX="578.0" layoutY="606.0" mnemonicParsing="false" onAction="#clickLogOut" prefHeight="25.0" prefWidth="128.0" style="-fx-background-color: pink;" stylesheets="@SecureApp.css" text="LOGOUT" />
 			</children>
 		</AnchorPane>
 	</center>
