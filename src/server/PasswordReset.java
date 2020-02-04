@@ -54,7 +54,7 @@ public class PasswordReset {
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject("Secure Chat Password");
-			message.setText(code);
+			message.setText("THIS IS YOUR CODE: " + code + "\n Introduce this code in the password reset window.  ");
 
 			System.out.println("sending...");
 			// Send message

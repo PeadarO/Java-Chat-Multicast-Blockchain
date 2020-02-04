@@ -56,8 +56,6 @@ public class Server implements Interfaz, Remote {
 		String pass = getProperty("pass");
 		String driver = "com.mysql.cj.jdbc.Driver";
 		try {
-			System.out.println(user);
-			System.out.println(pass);
 			Class.forName(driver);
 			connection = DriverManager.getConnection(url, user, pass);
 		} catch (ClassNotFoundException e) {
