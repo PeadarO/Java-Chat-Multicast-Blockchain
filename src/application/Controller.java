@@ -1,12 +1,7 @@
 package application;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.Optional;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,14 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import server.Server;
 
 public class Controller {
@@ -47,32 +39,17 @@ public class Controller {
 		data = FXCollections.observableArrayList();
 
 	}
-
-	// Permite volver a la pantalla de inicio y cerrar la sesion
-	public void cerrarSesion(ActionEvent event) {
-		server.logout();
-		mostrarVentana(event, (Node) event.getSource(), "Login.fxml", "Inicar sesion", true, true, -1);
-		cancelar(event);
+	
+	public String getusernameLogged(String myusername) {
+		userlogged = myusername;
+		return userlogged;
 	}
 
-	public void cancelar(ActionEvent event) {
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.close();
-
+	public String getId() {
+		return userlogged;
 	}
 
-	/**
-	 * Metodo que permite cambiar una nueva vista, abriendo un nuevo stage
-	 * 
-	 * @param event     ActionEvent que JavaFX pasa al método desde el que se llama
-	 *                  a mostrarVentana()
-	 * @param node      Node obtenido a partir del evento que pasa JavaFX
-	 * @param fxml      Archivo FXML que corresponde con la vista que quiere abrirse
-	 * @param title     Título que se le quiere dar a la nueva vista
-	 * @param escalable Define si el nuevo stage puede cambiar de tamaño
-	 * @param hide      Si se define como true, oculta el stage que se le pasa
-	 */
-	public void mostrarVentana(ActionEvent event, Node node, String fxml, String title, boolean escalable, boolean hide,
+	public void openWindow(ActionEvent event, Node node, String fxml, String title, boolean hide,
 			int selecionado) {
 		Parent root;
 		try {
@@ -81,12 +58,7 @@ public class Controller {
 			stage.setTitle(title);
 			stage.setScene(new Scene(root));
 			stage.getIcons().add(new Image("file:Resources/logo.png"));
-			if (escalable) {
-				stage.setResizable(true);
-
-			} else {
-				stage.setResizable(false);
-			}
+			stage.setResizable(false);
 			if (hide) {
 				((Node) (event.getSource())).getScene().getWindow().hide();
 
@@ -99,8 +71,7 @@ public class Controller {
 		}
 	}
 
-	// cambia de stage, manteniendo la ventana
-	public void cambiarVentana(ActionEvent event, Stage stage, String fxml, String title) {
+	public void changeStage(ActionEvent event, Stage stage, String fxml, String title) {
 		Parent root;
 		try {
 			root = FXMLLoader.load(getClass().getResource(fxml));
@@ -114,7 +85,7 @@ public class Controller {
 		}
 	}
 
-	public Optional<ButtonType> dialog(AlertType type, String title, String header, String content) {
+	public Optional<ButtonType> alert(AlertType type, String title, String header, String content) {
 		Alert alert = new Alert(type);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(new Image("file:Resources/images/logo.png"));
@@ -132,13 +103,16 @@ public class Controller {
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 	}
-
-	public String getusernameLogged(String myusername) {
-		userlogged = myusername;
-		return userlogged;
+	
+	public void cerrarSesion(ActionEvent event,int number) {
+		server.logout(number);
+		openWindow(event, (Node) event.getSource(), "Login.fxml", "Inicar sesion", true, -1);
+		cancelar(event);
 	}
 
-	public String getId() {
-		return userlogged;
+	public void cancelar(ActionEvent event) {
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.close();
+
 	}
 }

@@ -46,7 +46,7 @@ public class VControllerUser extends Controller {
 		// txtNueva.getText(), txtName.getText(), txtSurname.getText());
 		System.out.println("Updating user");
 		// } catch (RemoteException e) {
-		dialog(AlertType.WARNING, "Ha ocurrido algo", "Fallo modificando los datos",
+		alert(AlertType.WARNING, "Ha ocurrido algo", "Fallo modificando los datos",
 				"Pruebe a introducir de nuevo los datos, si el error persiste, introduce unos nuevos");
 		// e.printStackTrace();
 		// }
@@ -54,16 +54,18 @@ public class VControllerUser extends Controller {
 
 	public void clickSave(ActionEvent event) {
 		try {
-			if (txtOld.getText() != txtNew.getText()) {
+			boolean isOldDifferentNew = txtOld.getText() != txtNew.getText();
+
+			if (isOldDifferentNew) {
 				updateUser();
-				dialog(AlertType.INFORMATION, "EXIT", "Cambios realizados", "");
+				alert(AlertType.INFORMATION, "EXIT", "Cambios realizados", "");
 			} else {
-				dialog(AlertType.WARNING, "Datos introduccidos no aceptados", "La contraseña es igual a la anterior",
+				alert(AlertType.WARNING, "Datos introduccidos no aceptados", "La contraseña es igual a la anterior",
 						"Pruebe a introducir otra contraseña diferente");
 			}
 
 		} catch (Exception e) {
-			dialog(AlertType.ERROR, "Error", "Error", "Ha habido un error al guardar los cambios");
+			alert(AlertType.ERROR, "Error", "Error", "Ha habido un error al guardar los cambios");
 		}
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
@@ -80,6 +82,7 @@ public class VControllerUser extends Controller {
 			server.deleteUser(Integer.parseInt(getId()));
 			Stage stage = (Stage) btnSave.getScene().getWindow();
 			stage.close();
+			System.exit(0);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

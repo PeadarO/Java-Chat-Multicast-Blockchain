@@ -16,7 +16,7 @@ public interface Interfaz extends Remote {
     public boolean deleteUser(int number) throws RemoteException;
 
     // Login user
-    public boolean login(int number, String password) throws RemoteException;
+    public boolean isLogin(int number, String password) throws RemoteException;
 
     public boolean resetPassword(int number) throws RemoteException;
 

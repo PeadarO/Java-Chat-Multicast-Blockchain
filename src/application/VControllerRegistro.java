@@ -42,36 +42,46 @@ public class VControllerRegistro extends Controller {
 
 	public void clickRegisterUser(ActionEvent event) {
 		try {
-			if (txtNumber.getText() != "0" && txtNumber.getText() != "" && txtEmail.getText() != ""
-					&& txtPassword.getText() != "" && txtName.getText() != "" && txtNumber.getText() != null
-					&& txtEmail.getText() != null && txtPassword.getText() != null && txtName.getText() != null) {
+			boolean isNumberDistincThan0 = txtNumber.getText() != "0";
+			boolean isNotEmptyNumber = txtNumber.getText() != "";
+			boolean isNotEmptyEmail = txtEmail.getText() != "";
+			boolean isNotEmptyPassword = txtPassword.getText() != "";
+			boolean isNotEmptyName = txtName.getText() != "";
+			boolean isNumberNotNull = txtNumber.getText() != null;
+			boolean isEmailNotNull = txtEmail.getText() != null;
+			boolean isPasswordNotNull = txtPassword.getText() != null;
+			boolean isNameNotNull = txtName.getText() != null;
+			boolean isPasswordEqualConfirmPassword = txtPassword.getText().equals(txtConfirmPassword.getText());
 
-				if (txtPassword.getText().equals(txtConfirmPassword.getText())) {
-					newUser();
-					dialog(AlertType.INFORMATION, "Information", txtEmail.getText(), "Successful registered ");
+			if (isNumberDistincThan0 && isNotEmptyNumber && isNotEmptyEmail && isNotEmptyPassword && isNotEmptyName
+					&& isNumberNotNull && isEmailNotNull && isPasswordNotNull && isNameNotNull) {
+
+				if (isPasswordEqualConfirmPassword) {
+					createNewUser();
+					alert(AlertType.INFORMATION, "Information", txtEmail.getText(), "Successful registered ");
 					goLogin(event);
 
 				} else {
-					dialog(AlertType.INFORMATION, "Information", "Error", "The passwords do not match");
+					alert(AlertType.INFORMATION, "Information", "Error", "The passwords do not match");
 				}
 			}
 		} catch (Exception e) {
-			dialog(AlertType.INFORMATION, "Information", "Error", "Ha habido un error en el registro del usuario");
+			alert(AlertType.INFORMATION, "Information", "Error", "Ha habido un error en el registro del usuario");
 		}
 	}
 
-	public void newUser() throws SQLException {
-		if (!server.existeUsuario(Integer.parseInt(txtNumber.getText()))) {
-
-			server.registerUser(Integer.parseInt(txtNumber.getText()), txtEmail.getText(), txtPassword.getText(),
-					txtName.getText());
+	public void createNewUser() throws SQLException {
+		int number = Integer.parseInt(txtNumber.getText());
+		if (!server.isRegisteredUser(number)) {
+			server.registerUser(number, txtEmail.getText(), txtPassword.getText(), txtName.getText());
+			
 		} else {
-			dialog(AlertType.INFORMATION, "Information", "Error",
+			alert(AlertType.INFORMATION, "Information", "Error",
 					"This number: '" + txtNumber.getText() + "' is not available");
 		}
 	}
 
 	public void goLogin(ActionEvent event) {
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml", "Login");
+		changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml", "Login");
 	}
 }

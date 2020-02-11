@@ -42,13 +42,15 @@ public class VControllerForgetPassword extends Controller {
 
 	public void clickUpdatePassword(ActionEvent event) {
 		try {
-			if (txtNewPassword.getText().equals(txtConfirmNewPassword.getText())) {
+			boolean isPasswordEqualConfirmPassword = txtNewPassword.getText().equals(txtConfirmNewPassword.getText());
+
+			if (isPasswordEqualConfirmPassword) {
 				server.changePassword(txtHash.getText(), txtNewPassword.getText());
-				dialog(AlertType.INFORMATION, "Information", "Update password successful",
+				alert(AlertType.INFORMATION, "Information", "Update password successful",
 						"Now your password is: " + txtNewPassword.getText());
 				goLogin(event);
 			} else {
-				dialog(Alert.AlertType.INFORMATION, "Information", "Error", "Please check your password!!!");
+				alert(Alert.AlertType.INFORMATION, "Information", "Error", "Please check your password!!!");
 			}
 		} catch (RemoteException ex) {
 			Logger.getLogger(VControllerForgetPassword.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,6 +58,6 @@ public class VControllerForgetPassword extends Controller {
 	}
 
 	public void goLogin(ActionEvent event) {
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml", "Login");
+		changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Login.fxml", "Login");
 	}
 }

@@ -53,11 +53,11 @@ public class Server implements Interfaz, Remote {
 	public Connection getConnection() {
 		String url = getProperty("url");
 		String user = getProperty("user");
-		String pass = getProperty("pass");
+		String pwd = getProperty("pass");
 		String driver = "com.mysql.cj.jdbc.Driver";
 		try {
 			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, pass);
+			connection = DriverManager.getConnection(url, user, pwd);
 		} catch (ClassNotFoundException e) {
 			System.out.println("ERROR: DRIVER NOT FOUND ");
 			System.exit(-1);
@@ -117,17 +117,22 @@ public class Server implements Interfaz, Remote {
 	}
 
 	// Comprueba si existe un usuario
-	public boolean existeUsuario(int number) throws SQLException {
+	public boolean isRegisteredUser(int number) throws SQLException {
 		String query = "SELECT number FROM users WHERE number LIKE ?";
-		PreparedStatement stmt = connection.prepareStatement(query);
-		stmt.setInt(1, number);
-		ResultSet rset = stmt.executeQuery();
-		boolean exist = rset.next();
-		rset.close();
-		stmt.close();
-		if (exist) {
-			return true;
-		} else {
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, number);
+			ResultSet rset = stmt.executeQuery();
+			boolean exist = rset.next();
+			rset.close();
+			stmt.close();
+			if (exist)
+				return true;
+			else
+				return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -135,11 +140,9 @@ public class Server implements Interfaz, Remote {
 	@Override
 	public boolean updateUser(int number, String username, String password, String name) throws RemoteException {
 		boolean state;
-
 		String query = "UPDATE users SET password = ?, name = ? WHERE number LIKE '" + number + "'";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
-
 			stmt.setString(1, password);
 			stmt.setString(2, name);
 			stmt.executeUpdate();
@@ -169,7 +172,7 @@ public class Server implements Interfaz, Remote {
 	}
 
 	@Override
-	public boolean login(int number, String password) {
+	public boolean isLogin(int number, String password) {
 		correctNumber = 0;
 		String correctPassword = " ";
 
@@ -180,6 +183,7 @@ public class Server implements Interfaz, Remote {
 			stmt.setString(2, cipher(password));
 			ResultSet rset = stmt.executeQuery();
 			rset.next();
+
 			correctNumber = rset.getInt(1);
 			correctPassword = rset.getString(2);
 			rset.close();
@@ -190,12 +194,48 @@ public class Server implements Interfaz, Remote {
 
 		login = correctNumber == number && correctPassword.equals(cipher(password));
 		if (login) {
-			// status == true
+			if (isConnected(number))
+				return true;
+		}
+		return login;
+
+	}
+
+	private boolean isConnected(int number) {
+		String query2 = "UPDATE users set status =  1 WHERE number = '" + number + "'";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query2);
+			stmt.executeUpdate(query2);
+			stmt.close();
 			return true;
-		} else {
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
+	}
 
+	public String logout(int number) {
+		if (isDisconnectedUser(number)) {
+			connection = null;
+			login = false;
+			correctNumber = 0;
+			return "Logout successfull!";
+		} else {
+			return "Error disconnecting user, please repeat again in other moment!";
+		}
+	}
+
+	private boolean isDisconnectedUser(int number) {
+		String query2 = "UPDATE users set status =  0 WHERE number = '" + number + "'";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query2);
+			stmt.executeUpdate(query2);
+			stmt.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private String cipher(String password) {
@@ -204,10 +244,8 @@ public class Server implements Interfaz, Remote {
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 			byte[] cipherPwd = md.digest(password.getBytes(StandardCharsets.UTF_8));
-
 			strCipherPwd = bytesToHex(cipherPwd);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -224,28 +262,26 @@ public class Server implements Interfaz, Remote {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void readConnections(String query, TableView tableView, ObservableList<ObservableList> data)
 			throws RemoteException {
-		// clear table
-		data.clear();
-		tableView.getColumns().clear();
-		tableView.getItems().clear();
+		clearTableView(tableView, data);
 
 		try {
 			ResultSet rs = getConnection().createStatement().executeQuery(query);
 			// table column added dynamically
 			for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
 				final int j = i;
-				TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+				TableColumn columnData = new TableColumn(rs.getMetaData().getColumnName(i + 1));
 
-				col.setCellValueFactory(
+				columnData.setCellValueFactory(
 						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 								return new SimpleStringProperty(param.getValue().get(j).toString());
 							}
 						});
 
-				tableView.getColumns().addAll(col);
+				tableView.getColumns().addAll(columnData);
 
 				// data added to ObservableList
 				while (rs.next()) {
@@ -263,18 +299,14 @@ public class Server implements Interfaz, Remote {
 		}
 	}
 
+	private void clearTableView(TableView tableView, ObservableList<ObservableList> data) {
+		data.clear();
+		tableView.getColumns().clear();
+		tableView.getItems().clear();
+	}
+
 	public void setTableConnections(TableView<?> tableView) {
 		this.tableConnections = tableView;
-	}
-
-	public boolean isLogin() {
-		return login;
-	}
-
-	public void logout() {
-		connection = null;
-		login = false;
-		correctNumber = 0;
 	}
 
 	@Override
@@ -300,13 +332,14 @@ public class Server implements Interfaz, Remote {
 	}
 
 	public String getMail(int number) {
+		String query = "SELECT username FROM users WHERE number = ? ";
+		String mail;
 		try {
-			String query = "SELECT username FROM users WHERE number = ? ";
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setInt(1, number);
 			ResultSet rset = stmt.executeQuery();
 			rset.next();
-			String mail;
+
 			mail = rset.getString(1);
 			rset.close();
 			stmt.close();
@@ -332,10 +365,15 @@ public class Server implements Interfaz, Remote {
 
 	@Override
 	public boolean changePassword(String code, String password) throws RemoteException {
+		if (resetPassword(code, password))
+			if (deleteHashCode(code))
+				return true;
+		return false;
+	}
 
+	private boolean resetPassword(String code, String password) {
 		String query = "Update users inner join resetPassword  on users.number = "
 				+ "resetPassword.number set users.password = ? where resetPassword.codigo = ?;";
-		String query2 = "DELETE FROM resetpassword WHERE codigo LIKE'" + cipher(code) + "' ";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -343,36 +381,45 @@ public class Server implements Interfaz, Remote {
 			stmt.setString(2, cipher(code));
 			stmt.executeUpdate();
 			stmt.close();
-			PreparedStatement stmt2 = connection.prepareStatement(query2);
-			stmt2 = connection.prepareStatement(query2);
-			stmt2.executeUpdate();
-			stmt2.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			return false;
 		}
 		return true;
 	}
 
-	// MAIN
+	private boolean deleteHashCode(String code) {
+		String query = "DELETE FROM resetpassword WHERE codigo LIKE'" + cipher(code) + "' ";
+		try {
+			PreparedStatement stmt2 = connection.prepareStatement(query);
+			stmt2.executeUpdate();
+			stmt2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+
+		}
+		return true;
+	}
+
 	public static void main(String[] args) {
 		Registry reg = null;
 		try {
-			System.out.println("Creando el registro de objetos,escuchando en el puerto 5557");
+			System.out.println("Creating register of objects, listening in PORT: 5557");
 			reg = LocateRegistry.createRegistry(5557);
 		} catch (Exception e) {
-			System.out.println("ERROR:No se ha podido crear el registro");
+			System.out.println("ERROR: We can't create server! ");
 			e.printStackTrace();
 		}
-		System.out.println("Creando el objeto servidor");
+		System.out.println("Creating server object!");
 		Server serverObject = new Server();
 		try {
-			System.out.println("Inscribiendo el objeto servidor en el registro");
+			System.out.println("Registered server object!");
 			System.out.println("");
-			System.out.println("Se le da un nombre unico: Chat");
+			System.out.println("Unique name: Chat");
 			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
 		} catch (Exception e) {
 
-			System.out.println("ERROR:No se ha podido inscribir el objeto servidor.");
+			System.out.println("ERROR: We can't register server object!");
 			e.printStackTrace();
 		}
 	}

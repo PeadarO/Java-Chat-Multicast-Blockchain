@@ -40,18 +40,18 @@ public class Client extends Application {
 		Interfaz chat = null;
 		try {
 			Registry registry = LocateRegistry.getRegistry("localhost", 5557);
-			System.out.println("Obteniendo el stub del objeto remoto");
+			System.out.println("Obtain stub of object remote");
 			chat = (Interfaz) registry.lookup("Chat");
 		} catch (Exception e) {
 			System.out.println("---------------------------------------");
-			System.out.println("SERVIDOR NO ENCONTRADO");
+			System.out.println("Server not found!");
 			System.exit(-1);
 		}
 		if (chat != null) {
-			System.out.println("ABRIENDO APLICACION");
+			System.out.println("App opening!");
 			// lanzamos aplicacion visual
 			launch(args);
-			System.out.println("Java chat cerrado");
+			System.out.println("Closed Chat!");
 
 		}
 	}

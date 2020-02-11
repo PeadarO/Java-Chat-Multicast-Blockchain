@@ -67,16 +67,15 @@ public class VControllerApp extends Controller {
 
 	public void clickNewConnection(ActionEvent event) {
 		selecionado = -1;
-		mostrarVentana(event, (Node) event.getSource(), "Contacto.fxml", "New connection", false, false, selecionado);
+		openWindow(event, (Node) event.getSource(), "Contacto.fxml", "New connection", false, selecionado);
 	}
 
 	public void clickUpdateConnection(ActionEvent event) {
 		selecionado = tableView.getSelectionModel().getSelectedIndex();
 		if (selecionado != -1) {
-			mostrarVentana(event, (Node) event.getSource(), "Contacto.fxml", "Update connection", false, false,
-					selecionado);
+			openWindow(event, (Node) event.getSource(), "Contacto.fxml", "Update connection", false, selecionado);
 		} else {
-			dialog(AlertType.WARNING, "Alerta", "No hay ninguna fila seleccionada",
+			alert(AlertType.WARNING, "Alerta", "No hay ninguna fila seleccionada",
 					"Seleccione una fila para continuar");
 		}
 	}
@@ -92,7 +91,7 @@ public class VControllerApp extends Controller {
 			String data = (String) col.getCellObservableValue(row).getValue();
 
 			// alert to confirm
-			Optional<ButtonType> option = dialog(AlertType.CONFIRMATION, "Delete connection", "",
+			Optional<ButtonType> option = alert(AlertType.CONFIRMATION, "Delete connection", "",
 					"¿Estas seguro de eliminar el numero: " + data);
 
 			if (option.get() == ButtonType.OK) {
@@ -101,14 +100,14 @@ public class VControllerApp extends Controller {
 			}
 			refresh(null);
 		} else {
-			dialog(AlertType.WARNING, "Cuidado", "No hay ninguna fila seleccionada",
+			alert(AlertType.WARNING, "Cuidado", "No hay ninguna fila seleccionada",
 					"Seleccione una fila para continuar");
 		}
 	}
 
 	public void clickDeleteALLConnections(ActionEvent event) {
 		// alert to confirm
-		Optional<ButtonType> option = dialog(AlertType.CONFIRMATION, "Delete all connections", "",
+		Optional<ButtonType> option = alert(AlertType.CONFIRMATION, "Delete all connections", "",
 				"¿Are you sure delete all connections?, there will not be return");
 		if (option.get() == ButtonType.OK) {
 			// if (server.borrarTodo("DELETE FROM contacts WHERE ref_user LIKE'" + getId() +
@@ -116,7 +115,7 @@ public class VControllerApp extends Controller {
 			// dialog(AlertType.INFORMATION, "Todos los contactos eliminados", "", "");
 			System.out.println("All connections delete ");
 		} else {
-			dialog(AlertType.ERROR, "ERROR", "", "Ha ocurrido algo");
+			alert(AlertType.ERROR, "ERROR", "", "Ha ocurrido algo");
 			// }
 		}
 		refresh(null);
@@ -140,10 +139,11 @@ public class VControllerApp extends Controller {
 	}
 
 	public void clickProfile(ActionEvent event) {
-		mostrarVentana(event, (Node) event.getSource(), "Profile.fxml", "User Profile", false, false, 0);
+		openWindow(event, (Node) event.getSource(), "Profile.fxml", "User Profile", false, 0);
 	}
 
 	public void clickLogOut(ActionEvent event) {
-		cerrarSesion(event);
+		int getNumber = Integer.parseInt(lblUser.getText());
+		cerrarSesion(event, getNumber);
 	}
 }

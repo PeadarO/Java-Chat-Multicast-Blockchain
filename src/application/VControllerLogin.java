@@ -34,43 +34,41 @@ public class VControllerLogin extends Controller {
 	}
 
 	public void clickLogin(ActionEvent event) {
-		if (txtNumber.getText().equals("")) {
-			dialog(AlertType.INFORMATION, "Information", "Error", "Telephone field is empty");
-
+		boolean isNumberEmpty = txtNumber.getText().equals("");
+		boolean isGoodLogin = server.isLogin(Integer.parseInt(txtNumber.getText()), txtPassword.getText());
+		
+		if (isNumberEmpty) {
+			alert(AlertType.INFORMATION, "Information", "Error", "Telephone number field is empty");
 			return;
-
 		}
-		if (server.login(Integer.parseInt(txtNumber.getText()), txtPassword.getText())) {
-			if (server.isLogin()) {
-				System.out.println("LOGEADO");
-				getusernameLogged(txtNumber.getText());
-				mostrarVentana(event, (Node) event.getSource(), "App.fxml", "Cipher Chat", false, true, -1);
-			} else {
-				dialog(AlertType.INFORMATION, "Information", "Error", "Incorrect number or password");
-			}
+		if (isGoodLogin) {
+			System.out.println("LOGEADO numero:" + txtNumber.getText());
+			getusernameLogged(txtNumber.getText());
+			openWindow(event, (Node) event.getSource(), "App.fxml", "Cipher Chat", true, -1);
+
 		} else {
-			dialog(AlertType.INFORMATION, "Information", "Error", "Please insert number and password");
+			alert(AlertType.INFORMATION, "Information", "Error", "Please insert number and password");
 		}
 	}
 
 	public void clickRegistro(ActionEvent event) {
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Registro.fxml", "Register");
+		changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "Registro.fxml", "Register");
 	}
 
 	public void clickForgetPassword(ActionEvent event) {
 		if (txtNumber.getText().equals("")) {
-			dialog(AlertType.INFORMATION, "Information", "We need yout telephone number", "Telephone field is empty");
+			alert(AlertType.INFORMATION, "Information", "We need yout telephone number", "Telephone field is empty");
 			return;
 		}
 		try {
 			if (!server.resetPassword(Integer.parseInt(txtNumber.getText()))) {
-				dialog(AlertType.INFORMATION, "Information", "Please check your mail!",
+				alert(AlertType.INFORMATION, "Information", "Please check your mail!",
 						"If your dont receive a message with a code, please reset your internet or try to change your wifi network.");
 			}
 		} catch (RemoteException ex) {
 			Logger.getLogger(VControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		cambiarVentana(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ForgetPassword.fxml",
+		changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "ForgetPassword.fxml",
 				"Forget Password");
 	}
 }
