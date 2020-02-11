@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="panelLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@SecureApp.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerRegistro">
+<Pane id="panelLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@SecureApp.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerRegistro">
    <children>
       <Pane layoutX="169.0" layoutY="52.0" prefHeight="275.0" prefWidth="262.0" style="-fx-background-color: white;">
          <children>
@@ -15,33 +16,33 @@
             <Label layoutX="13.0" layoutY="101.0" text="Email:" />
             <Label layoutX="15.0" layoutY="162.0" text="Password:" />
             <Label layoutX="15.0" layoutY="184.0" text="Confirm &#10;Password:" />
-            <TextField fx:id="txtName" layoutX="108.0" layoutY="69.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <TextField fx:id="txtName" layoutX="109.0" layoutY="70.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtEmail" layoutX="109.0" layoutY="99.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <TextField fx:id="txtEmail" layoutX="109.0" layoutY="100.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtNumber" layoutX="109.0" layoutY="127.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <TextField fx:id="txtNumber" layoutX="109.0" layoutY="130.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtPassword" layoutX="109.0" layoutY="156.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            <Button fx:id="btnRegister" alignment="CENTER" contentDisplay="CENTER" layoutX="135.0" layoutY="236.0" mnemonicParsing="false" onAction="#clickRegisterUser" prefHeight="27.0" prefWidth="100.0" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Sign up" textAlignment="CENTER" />
+            <Button fx:id="btnCancel" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="236.0" mnemonicParsing="false" onAction="#goLogin" prefHeight="27.0" prefWidth="100.0" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Back to login" textAlignment="CENTER" />
+            <PasswordField fx:id="txtPassword" layoutX="109.0" layoutY="160.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
-            </TextField>
-            <TextField fx:id="txtConfirmPassword" layoutX="109.0" layoutY="189.0" styleClass="Textfield" stylesheets="@SecureApp.css">
+            </PasswordField>
+            <PasswordField fx:id="txtConfirmPassword" layoutX="109.0" layoutY="190.0" styleClass="Textfield" stylesheets="@SecureApp.css">
                <font>
                   <Font size="10.0" />
                </font>
-            </TextField>
-            <Button fx:id="btnRegister" layoutX="157.0" layoutY="233.0" mnemonicParsing="false" onAction="#clickRegisterUser" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Join" />
-            <Button fx:id="btnCancel" layoutX="31.0" layoutY="233.0" mnemonicParsing="false" onAction="#goLogin" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Back to login" />
+            </PasswordField>
          </children>
       </Pane>
    </children>

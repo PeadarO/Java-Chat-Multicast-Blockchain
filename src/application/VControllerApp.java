@@ -143,7 +143,7 @@ public class VControllerApp extends Controller {
 	}
 
 	public void clickLogOut(ActionEvent event) {
-		int getNumber = Integer.parseInt(lblUser.getText());
+		int getNumber = Integer.parseInt(getId());
 		cerrarSesion(event, getNumber);
 	}
 }

@@ -408,7 +408,8 @@ public class Server implements Interfaz, Remote {
 			reg = LocateRegistry.createRegistry(5557);
 		} catch (Exception e) {
 			System.out.println("ERROR: We can't create server! ");
-			e.printStackTrace();
+			System.out.println("Can't use port 5557, because is in use!");
+			System.exit(0);
 		}
 		System.out.println("Creating server object!");
 		Server serverObject = new Server();
