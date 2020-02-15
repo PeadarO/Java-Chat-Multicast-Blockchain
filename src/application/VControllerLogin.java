@@ -3,12 +3,13 @@ package application;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import server.Server;
 
@@ -36,7 +37,7 @@ public class VControllerLogin extends Controller {
 	public void clickLogin(ActionEvent event) {
 		boolean isNumberEmpty = txtNumber.getText().equals("");
 		boolean isGoodLogin = server.isLogin(Integer.parseInt(txtNumber.getText()), txtPassword.getText());
-		
+
 		if (isNumberEmpty) {
 			alert(AlertType.INFORMATION, "Information", "Error", "Telephone number field is empty");
 			return;
@@ -44,7 +45,7 @@ public class VControllerLogin extends Controller {
 		if (isGoodLogin) {
 			System.out.println("LOGEADO numero:" + txtNumber.getText());
 			getusernameLogged(txtNumber.getText());
-			openWindow(event, (Node) event.getSource(), "App.fxml", "Cipher Chat", true, -1);
+			openWindow(event, (Node) event.getSource(), "App2.fxml", "Cipher Chat", true, -1);
 
 		} else {
 			alert(AlertType.INFORMATION, "Information", "Error", "Please insert number and password");

@@ -51,7 +51,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="btnDeleteConnection" alignment="CENTER" layoutX="581.0" layoutY="211.0" mnemonicParsing="false" onAction="#clickDeleteConnection" prefHeight="40.0" prefWidth="125.0" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Delete" textFill="WHITE" AnchorPane.leftAnchor="581.0" AnchorPane.topAnchor="192.0">
+            <Button fx:id="btnDeleteConnection" alignment="CENTER" layoutX="581.0" layoutY="211.0" mnemonicParsing="false" onAction="#clickDeleteConnection" prefHeight="40.0" prefWidth="125.0" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Delete1" textFill="WHITE" AnchorPane.leftAnchor="581.0" AnchorPane.topAnchor="192.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
