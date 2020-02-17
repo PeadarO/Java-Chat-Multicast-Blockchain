@@ -21,8 +21,6 @@ public class VControllerCreateConnectChat extends Controller {
 	private Button btnCreateRoom;
 	@FXML
 	private Button btnConnectRoom;
-	boolean isNewPasswordEmpty = txtNewPassword.getText().isEmpty();
-	boolean isConnectPasswordEmpty = txtValidatorPassword.getText().isEmpty();
 
 	public VControllerCreateConnectChat() {
 		Server server = new Server();
@@ -34,8 +32,10 @@ public class VControllerCreateConnectChat extends Controller {
 	}
 
 	public String clickCreateRoom(ActionEvent event) {
+		boolean isNewPasswordEmpty = txtNewPassword.getText().isEmpty();
+		boolean isConnectPasswordEmpty = txtValidatorPassword.getText().isEmpty();
 		if (!isNewPasswordEmpty && isConnectPasswordEmpty) {
-			String key = null;//server.generatorKey();
+			String key = null;// server.generatorKey();
 			int port = Integer.parseInt(txtPort.getText());
 			server.insertNewChatPassword(txtNewPassword.getText(), key, port);
 			openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);
@@ -47,6 +47,8 @@ public class VControllerCreateConnectChat extends Controller {
 	}
 
 	public String clickConnectRoom(ActionEvent event) {
+		boolean isNewPasswordEmpty = txtNewPassword.getText().isEmpty();
+		boolean isConnectPasswordEmpty = txtValidatorPassword.getText().isEmpty();
 		if (!isConnectPasswordEmpty && isNewPasswordEmpty) {
 			if (server.isRegisteredPassword(txtValidatorPassword.getText())) {
 				openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);

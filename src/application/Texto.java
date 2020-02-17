@@ -11,9 +11,9 @@ package application;
  */
 public class Texto {
 
-    String texto;
+	String texto;
 
-    public Texto(String texto) {
-        this.texto = texto;
-    }
+	public Texto(String texto) {
+		this.texto = texto;
+	}
 }

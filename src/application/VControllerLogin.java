@@ -45,7 +45,8 @@ public class VControllerLogin extends Controller {
 		if (isGoodLogin) {
 			System.out.println("LOGEADO numero:" + txtNumber.getText());
 			getusernameLogged(txtNumber.getText());
-			openWindow(event, (Node) event.getSource(), "CreateorConnectChat.fxml", "Create or Connect to Chat Room", true);
+			openWindow(event, (Node) event.getSource(), "CreateorConnectChat.fxml", "Create or Connect to Chat Room",
+					true);
 
 		} else {
 			alert(AlertType.INFORMATION, "Information", "Error", "Please insert number and password");

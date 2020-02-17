@@ -74,7 +74,7 @@ public class VControllerRegistro extends Controller {
 		int number = Integer.parseInt(txtNumber.getText());
 		if (!server.isRegisteredUser(number)) {
 			server.registerUser(number, txtEmail.getText(), txtPassword.getText(), txtName.getText());
-			
+
 		} else {
 			alert(AlertType.INFORMATION, "Information", "Error",
 					"This number: '" + txtNumber.getText() + "' is not available");
