@@ -2,7 +2,6 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 
 public interface Interfaz extends Remote {
 
