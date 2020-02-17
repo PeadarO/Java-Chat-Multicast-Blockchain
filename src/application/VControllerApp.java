@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -41,11 +42,10 @@ public class VControllerApp extends Controller {
 	String key;
 	String texto = "";
 
-	@FXML
-	private void initialize() {
-		lblUser.setText("Bienvenido " + getId().toUpperCase());
-	}
-
+	/*
+	 * @FXML private void initialize() { lblUser.setText("Bienvenido " +
+	 * getId().toUpperCase()); }
+	 */
 	public VControllerApp() {
 		Server server = new Server();
 		this.server = server;
@@ -55,12 +55,12 @@ public class VControllerApp extends Controller {
 		if (VControllerCreateConnectChat.PORT != null)
 			chat(VControllerCreateConnectChat.PORT, getId());
 		else {
-			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCES_CHAT);
+			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCESS_CHAT);
 			port = Integer.parseInt(chatParameters[0]);
 			key = chatParameters[1];
 			System.out.println("PUERTO Y KEY -> " + port + "" + key);
 			chat(chatParameters[0], getId());
-			initialize();
+			// initialize();
 		}
 
 	}
@@ -110,6 +110,11 @@ public class VControllerApp extends Controller {
 
 	public void clickProfile(ActionEvent event) {
 		openWindow(event, (Node) event.getSource(), "Profile.fxml", "User Profile", false);
+	}
+
+	public void clickShowInformation(ActionEvent event) {
+		alert(AlertType.INFORMATION, "Information of room chat",
+				"Chat password: " + VControllerCreateConnectChat.ACCESS_CHAT, "Port in use: " + port);
 	}
 
 	public void clickLogOut(ActionEvent event) {

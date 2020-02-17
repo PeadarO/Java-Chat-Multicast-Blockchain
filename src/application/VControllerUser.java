@@ -41,21 +41,19 @@ public class VControllerUser extends Controller {
 	}
 
 	private void updateUser() {
-		// try {
-		// server.updateUser(number, username, password, name)(getId(),
-		// txtNueva.getText(), txtName.getText(), txtSurname.getText());
-		System.out.println("Updating user");
-		// } catch (RemoteException e) {
-		alert(AlertType.WARNING, "Ha ocurrido algo", "Fallo modificando los datos",
-				"Pruebe a introducir de nuevo los datos, si el error persiste, introduce unos nuevos");
-		// e.printStackTrace();
-		// }
+		try {
+			server.updateUser(Integer.parseInt(getId()), txtNew.getText(), txtName.getText(), txtEmail.getText());
+			System.out.println("Updating user");
+		} catch (RemoteException e) {
+			alert(AlertType.WARNING, "Ha ocurrido algo", "Fallo modificando los datos",
+					"Pruebe a introducir de nuevo los datos, si el error persiste, introduce unos nuevos");
+			e.printStackTrace();
+		}
 	}
 
 	public void clickSave(ActionEvent event) {
 		try {
 			boolean isOldDifferentNew = txtOld.getText() != txtNew.getText();
-
 			if (isOldDifferentNew) {
 				updateUser();
 				alert(AlertType.INFORMATION, "EXIT", "Cambios realizados", "");
@@ -69,7 +67,6 @@ public class VControllerUser extends Controller {
 		}
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
-		// server.refreshContactos();
 	}
 
 	public void clickCancel(ActionEvent event) {

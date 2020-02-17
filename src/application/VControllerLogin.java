@@ -43,7 +43,7 @@ public class VControllerLogin extends Controller {
 			return;
 		}
 		if (isGoodLogin) {
-			System.out.println("LOGEADO numero:" + txtNumber.getText());
+			System.out.println("LOGEADO numero: " + txtNumber.getText());
 			getusernameLogged(txtNumber.getText());
 			openWindow(event, (Node) event.getSource(), "CreateorConnectChat.fxml", "Create or Connect to Chat Room",
 					true);
