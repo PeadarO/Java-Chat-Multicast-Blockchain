@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -19,10 +21,27 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 public class Server implements Interfaz, Remote {
+
+	// Definición del tipo de algoritmo a utilizar (AES, DES, RSA)
+	private final String alg;
+	// Definición del modo de cifrado a utilizar
+	private final String cI;
+	//Vector de inicializacion
+	private final String iV;
 
 	private Connection connection;
 	private File config;
@@ -33,6 +52,9 @@ public class Server implements Interfaz, Remote {
 	private int correctNumber;
 
 	public Server() {
+		iV = "0123456789ABCDEF";
+		cI = "AES/CBC/PKCS5Padding";
+		alg = "AES";
 		config = new File("src/configuration.ini");
 		properties = new Properties();
 		output = null;
@@ -412,6 +434,75 @@ public class Server implements Interfaz, Remote {
 		}
 		return chatParameters;
 
+	}
+
+	public String encrypt(String key, String cleartext){
+		Cipher cipher;
+		byte[] encrypted = null;
+		try {
+			cipher = Cipher.getInstance(cI);
+			SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
+			byte[] decode = Base64.getDecoder().decode(skeySpec.getEncoded());
+
+			IvParameterSpec ivParameterSpec = new IvParameterSpec(iV.getBytes());
+			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivParameterSpec);
+			encrypted = cipher.doFinal(cleartext.getBytes());
+			return new String(Base64.getEncoder().encode(encrypted));
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+			return "ERROR";
+
+		}
+	}
+
+	public String decrypt(String key, String encrypted){
+		Cipher cipher;
+		try {
+			cipher = Cipher.getInstance(cI);
+			SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
+			IvParameterSpec ivParameterSpec = new IvParameterSpec(iV.getBytes());
+			System.out.println(encrypted);
+			byte[] enc = Base64.getDecoder().decode(encrypted);
+			cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivParameterSpec);
+			byte[] decrypted = cipher.doFinal(enc);
+			return new String(decrypted);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+			return "ERROR";
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
+		
 	}
 
 	public static void main(String[] args) {
