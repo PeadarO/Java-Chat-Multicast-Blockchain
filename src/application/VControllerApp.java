@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.security.KeyStore.Entry;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -44,6 +42,10 @@ public class VControllerApp extends Controller {
 	String key;
 	String texto = "";
 
+	/*
+	 * @FXML private void initialize() { lblUser.setText("Bienvenido " +
+	 * getId().toUpperCase()); }
+	 */
 	public VControllerApp() {
 		Server server = new Server();
 		this.server = server;
@@ -53,17 +55,13 @@ public class VControllerApp extends Controller {
 		if (VControllerCreateConnectChat.PORT != null)
 			chat(VControllerCreateConnectChat.PORT, getId());
 		else {
-			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCES_CHAT);
+			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCESS_CHAT);
 			port = Integer.parseInt(chatParameters[0]);
 			key = chatParameters[1];
 			System.out.println("PUERTO Y KEY -> " + port + "" + key);
 			chat(chatParameters[0], getId());
+			// initialize();
 		}
-	}
-
-	private void initialize() {
-		lblUser.setText("Bienvenido " + getId().toUpperCase());
-		System.out.println("hola");
 
 	}
 
@@ -72,7 +70,7 @@ public class VControllerApp extends Controller {
 			System.out.println("hola desde chat");
 			group = InetAddress.getByName(direccion);
 			port = Integer.parseInt(puerto);
-			this.name = name;
+			VControllerApp.name = name;
 			socket = new MulticastSocket(port);
 			socket.setTimeToLive(0);
 			socket.joinGroup(group);
@@ -115,6 +113,11 @@ public class VControllerApp extends Controller {
 		openWindow(event, (Node) event.getSource(), "Profile.fxml", "User Profile", false);
 	}
 
+	public void clickShowInformation(ActionEvent event) {
+		alert(AlertType.INFORMATION, "Information of room chat",
+				"Chat password: " + VControllerCreateConnectChat.ACCESS_CHAT, "Port in use: " + port);
+	}
+
 	public void clickLogOut(ActionEvent event) {
 		int getNumber = Integer.parseInt(getId());
 		cerrarSesion(event, getNumber);
@@ -122,8 +125,7 @@ public class VControllerApp extends Controller {
 
 	@FXML
 	private void sendClicked(MouseEvent event) {
-		String message;
-		message = txtMessage.getText();
+		String message = txtMessage.getText();
 		System.out.println(message);
 		txtMessage.setText("");
 		message = name + ": " + message;
@@ -140,6 +142,5 @@ public class VControllerApp extends Controller {
 	}
 
 	static void pintar(String message) {
-
 	}
 }

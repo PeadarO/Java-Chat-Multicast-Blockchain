@@ -112,7 +112,7 @@ public class Server implements Interfaz, Remote {
 	// LOGIN-REGISTRO
 	@Override
 	public boolean registerUser(int number, String username, String password, String name) {
-		String query = "INSERT INTO users (number,username, password, name,status) VALUES (?, ?, ?, ?,?)";
+		String query = "INSERT INTO users (number,email, password, name,status) VALUES (?, ?, ?, ?,?)";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setInt(1, number);
@@ -152,21 +152,20 @@ public class Server implements Interfaz, Remote {
 	}
 
 	@Override
-	public boolean updateUser(int number, String username, String password, String name) throws RemoteException {
-		boolean state;
-		String query = "UPDATE users SET password = ?, name = ? WHERE number LIKE '" + number + "'";
+	public boolean updateUser(int number, String password, String name, String email) throws RemoteException {
+		String query = "UPDATE users SET password = ?, email = ?, name = ? WHERE number LIKE '" + number + "'";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setString(1, password);
 			stmt.setString(2, name);
+			stmt.setString(2, email);
 			stmt.executeUpdate();
 			stmt.close();
-			state = true;
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			state = false;
+			return false;
 		}
-		return state;
 	}
 
 	@Override
@@ -189,7 +188,6 @@ public class Server implements Interfaz, Remote {
 	public boolean isLogin(int number, String password) {
 		correctNumber = 0;
 		String correctPassword = " ";
-
 		try {
 			String query = "SELECT number, password FROM users WHERE number = ?  AND password = ?";
 			PreparedStatement stmt = connection.prepareStatement(query);
@@ -229,17 +227,6 @@ public class Server implements Interfaz, Remote {
 		}
 	}
 
-	public String logout(int number) {
-		if (isDisconnectedUser(number)) {
-			connection = null;
-			login = false;
-			correctNumber = 0;
-			return "Logout successfull!";
-		} else {
-			return "Error disconnecting user, please repeat again in other moment!";
-		}
-	}
-
 	private boolean isDisconnectedUser(int number) {
 		String query2 = "UPDATE users set status =  0 WHERE number = '" + number + "'";
 		try {
@@ -250,6 +237,17 @@ public class Server implements Interfaz, Remote {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	public String logout(int number) {
+		if (isDisconnectedUser(number)) {
+			connection = null;
+			login = false;
+			correctNumber = 0;
+			return "Logout successfull!";
+		} else {
+			return "Error disconnecting user, please repeat again in other moment!";
 		}
 	}
 
@@ -406,30 +404,6 @@ public class Server implements Interfaz, Remote {
 		}
 	}
 
-	public static void main(String[] args) {
-		Registry reg = null;
-		try {
-			System.out.println("Creating register of objects, listening in PORT: 5557");
-			reg = LocateRegistry.createRegistry(5557);
-		} catch (Exception e) {
-			System.out.println("ERROR: We can't create server! ");
-			System.out.println("Can't use port 5557, because is in use!");
-			System.exit(0);
-		}
-		System.out.println("Creating server object!");
-		Server serverObject = new Server();
-		try {
-			System.out.println("Registered server object!");
-			System.out.println("");
-			System.out.println("Unique name: Chat");
-			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
-		} catch (Exception e) {
-
-			System.out.println("ERROR: We can't register server object!");
-			e.printStackTrace();
-		}
-	}
-
 	public String getKey() {
 		String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String key = "";
@@ -531,4 +505,27 @@ public class Server implements Interfaz, Remote {
 		
 	}
 
+	public static void main(String[] args) {
+		Registry reg = null;
+		try {
+			System.out.println("Creating register of objects, listening in PORT: 5557");
+			reg = LocateRegistry.createRegistry(5557);
+		} catch (Exception e) {
+			System.out.println("ERROR: We can't create server! ");
+			System.out.println("Can't use port 5557, because is in use!");
+			System.exit(0);
+		}
+		System.out.println("Creating server object!");
+		Server serverObject = new Server();
+		try {
+			System.out.println("Registered server object!");
+			System.out.println("");
+			System.out.println("Unique name: Chat");
+			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
+		} catch (Exception e) {
+
+			System.out.println("ERROR: We can't register server object!");
+			e.printStackTrace();
+		}
+	}
 }
