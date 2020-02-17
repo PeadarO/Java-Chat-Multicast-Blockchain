@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="720.0" maxWidth="709.0" prefHeight="720.0" prefWidth="709.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VControllerApp">
+	<top>
+		<Pane styleClass="paneUp" stylesheets="@../application/SecureApp.css">
+			<children>
+				<Label alignment="CENTER" contentDisplay="CENTER" prefHeight="72.0" prefWidth="709.0" style="-fx-text-fill: black;" stylesheets="@../application/application.css" text="Java Chat " textAlignment="CENTER" textFill="WHITE">
+					<font>
+						<Font name="octicons" size="38.0" />
+					</font>
+				</Label>
+				<ImageView fitHeight="40.0" fitWidth="40.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+					<image>
+						<Image url="@../../Resources/logo.png" />
+					</image>
+				</ImageView>
+            <AnchorPane id="subListado" layoutX="197.0" layoutY="56.0" prefHeight="4.0" prefWidth="315.0" styleClass="buttonAzul" stylesheets="@../application/application.css" />
+            <ImageView fitHeight="33.0" fitWidth="34.0" layoutX="650.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+               <image>
+                  <Image url="@../../Resources/user.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Button fx:id="btnProfile" layoutX="639.0" layoutY="15.0" mnemonicParsing="false" onAction="#clickProfile" prefHeight="43.0" prefWidth="55.0" style="-fx-border-color: transparent;" stylesheets="@SecureApp.css" visible="false" />
+			</children>
+		</Pane>
+	</top>
+	<center>
+		<AnchorPane prefHeight="648.0" BorderPane.alignment="CENTER">
+			<children>
+            <ImageView fitHeight="720.0" fitWidth="709.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../../Resources/registro.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="btnShowPassword" alignment="CENTER" layoutX="559.0" layoutY="71.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" stylesheets="@SecureApp.css" text="Show password" textFill="WHITE" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="71.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="btnLogout" alignment="CENTER" layoutX="559.0" layoutY="123.0" mnemonicParsing="false" onAction="#clickLogOut" prefHeight="40.0" prefWidth="125.0" styleClass="buttonRojo" stylesheets="@SecureApp.css" text="Log-out" textFill="WHITE" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="123.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+				<TextField fx:id="txtMessage" layoutX="47.0" layoutY="575.0" prefHeight="26.0" prefWidth="390.0" promptText="Escribe un mensaje" stylesheets="@SecureApp.css" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="272.0" AnchorPane.topAnchor="575.0" />
+            <Button fx:id="send" layoutX="445.0" layoutY="575.0" mnemonicParsing="false" onMouseClicked="#sendClicked" prefHeight="27.0" prefWidth="91.0" styleClass="buttonAzul" stylesheets="@SecureApp.css" text="Enviar" AnchorPane.leftAnchor="445.0" AnchorPane.topAnchor="575.0" />
+            <Label fx:id="lblUser" alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="14.0" prefHeight="45.0" prefWidth="490.0" stylesheets="@SecureApp.css" textAlignment="JUSTIFY" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="textoFinal" editable="false" layoutX="47.0" layoutY="71.0" prefHeight="490.0" prefWidth="490.0" promptText="Chat vacio" styleClass="buttonAzul" stylesheets="@SecureApp.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font></TextArea>
+			</children>
+		</AnchorPane>
+	</center>
+</BorderPane>

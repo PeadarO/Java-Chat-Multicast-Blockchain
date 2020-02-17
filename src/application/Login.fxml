@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
@@ -20,7 +21,6 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <ImageView id="logo" fitHeight="68.0" fitWidth="91.0" layoutX="93.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="302.0" prefHeight="17.0" prefWidth="276.0" text="Forget your password?  Click here to reset" textFill="#eb0404" />
             <Button layoutX="26.0" layoutY="298.0" mnemonicParsing="false" onAction="#clickForgetPassword" prefHeight="27.0" prefWidth="228.0" style="-fx-background-color: transparent; -fx-background-radius: 0; -fx-border-color: transparent;">
                <cursor>
@@ -28,6 +28,11 @@
                </cursor>
             </Button>
             <PasswordField fx:id="txtPassword" layoutX="114.0" layoutY="174.0" prefHeight="27.0" prefWidth="145.0" styleClass="Textfield" stylesheets="@SecureApp.css" />
+            <ImageView id="logo" fitHeight="68.0" fitWidth="68.0" layoutX="103.0" layoutY="36.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../Resources/logo.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </children>

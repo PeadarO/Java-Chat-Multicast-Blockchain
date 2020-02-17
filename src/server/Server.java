@@ -19,12 +19,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
-
-import application.chat;
 
 public class Server implements Interfaz, Remote {
 
@@ -388,30 +384,6 @@ public class Server implements Interfaz, Remote {
 		}
 	}
 
-	public static void main(String[] args) {
-		Registry reg = null;
-		try {
-			System.out.println("Creating register of objects, listening in PORT: 5557");
-			reg = LocateRegistry.createRegistry(5557);
-		} catch (Exception e) {
-			System.out.println("ERROR: We can't create server! ");
-			System.out.println("Can't use port 5557, because is in use!");
-			System.exit(0);
-		}
-		System.out.println("Creating server object!");
-		Server serverObject = new Server();
-		try {
-			System.out.println("Registered server object!");
-			System.out.println("");
-			System.out.println("Unique name: Chat");
-			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
-		} catch (Exception e) {
-
-			System.out.println("ERROR: We can't register server object!");
-			e.printStackTrace();
-		}
-	}
-
 	public String getKey() {
 		String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String key = "";
@@ -442,5 +414,29 @@ public class Server implements Interfaz, Remote {
 		}
 		return chatParameters;
 
+	}
+	
+	public static void main(String[] args) {
+		Registry reg = null;
+		try {
+			System.out.println("Creating register of objects, listening in PORT: 5557");
+			reg = LocateRegistry.createRegistry(5557);
+		} catch (Exception e) {
+			System.out.println("ERROR: We can't create server! ");
+			System.out.println("Can't use port 5557, because is in use!");
+			System.exit(0);
+		}
+		System.out.println("Creating server object!");
+		Server serverObject = new Server();
+		try {
+			System.out.println("Registered server object!");
+			System.out.println("");
+			System.out.println("Unique name: Chat");
+			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
+		} catch (Exception e) {
+
+			System.out.println("ERROR: We can't register server object!");
+			e.printStackTrace();
+		}
 	}
 }

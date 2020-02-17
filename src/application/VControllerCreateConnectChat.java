@@ -41,8 +41,8 @@ public class VControllerCreateConnectChat extends Controller {
 			String key = server.getKey();
 			int port = Integer.parseInt(txtPort.getText());
 			server.insertNewChatPassword(txtNewPassword.getText(), key, port);
-			this.PORT = txtPort.getText();
-			openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);
+			VControllerCreateConnectChat.PORT = txtPort.getText();
+			openWindow(event, (Node) event.getSource(), "RoomChat.fxml", "Room chat", false);
 			return "Created room in port:" + txtPort.getText();
 		} else {
 			alert(AlertType.WARNING, "Error creating room", "", "Please empty the other textfield to create room.");
@@ -55,7 +55,7 @@ public class VControllerCreateConnectChat extends Controller {
 		if (!isConnectPasswordEmpty) {
 			if (server.isRegisteredPassword(txtValidatorPassword.getText())) {
 				ACCES_CHAT = txtValidatorPassword.getText();
-				openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);
+				openWindow(event, (Node) event.getSource(), "RoomChat.fxml", "Room chat", false);
 				return "Successful enter in Room.";
 			} else {
 				alert(Alert.AlertType.ERROR, "", "", "");
