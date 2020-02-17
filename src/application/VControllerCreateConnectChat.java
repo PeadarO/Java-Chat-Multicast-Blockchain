@@ -10,6 +10,9 @@ import javafx.scene.control.Alert.AlertType;
 import server.Server;
 
 public class VControllerCreateConnectChat extends Controller {
+	
+	public static String ACCES_CHAT;
+	public static String PORT;
 	private Server server;
 	@FXML
 	private TextField txtNewPassword;
@@ -33,11 +36,12 @@ public class VControllerCreateConnectChat extends Controller {
 
 	public String clickCreateRoom(ActionEvent event) {
 		boolean isNewPasswordEmpty = txtNewPassword.getText().isEmpty();
-		boolean isConnectPasswordEmpty = txtValidatorPassword.getText().isEmpty();
-		if (!isNewPasswordEmpty && isConnectPasswordEmpty) {
-			String key = null;// server.generatorKey();
+		boolean isPortEmpty = txtPort.getText().isEmpty();
+		if (!isNewPasswordEmpty && !isPortEmpty) {
+			String key = server.getKey();
 			int port = Integer.parseInt(txtPort.getText());
 			server.insertNewChatPassword(txtNewPassword.getText(), key, port);
+			this.PORT = txtPort.getText();
 			openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);
 			return "Created room in port:" + txtPort.getText();
 		} else {
@@ -47,12 +51,12 @@ public class VControllerCreateConnectChat extends Controller {
 	}
 
 	public String clickConnectRoom(ActionEvent event) {
-		boolean isNewPasswordEmpty = txtNewPassword.getText().isEmpty();
 		boolean isConnectPasswordEmpty = txtValidatorPassword.getText().isEmpty();
-		if (!isConnectPasswordEmpty && isNewPasswordEmpty) {
+		if (!isConnectPasswordEmpty) {
 			if (server.isRegisteredPassword(txtValidatorPassword.getText())) {
+				ACCES_CHAT = txtValidatorPassword.getText();
 				openWindow(event, (Node) event.getSource(), "App2.fxml", "Room chat", false);
-				return "Successful enter in Room. PORT: " + txtPort.getText();
+				return "Successful enter in Room.";
 			} else {
 				alert(Alert.AlertType.ERROR, "", "", "");
 			}

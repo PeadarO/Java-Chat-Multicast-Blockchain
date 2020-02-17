@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.security.KeyStore.Entry;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -36,8 +39,9 @@ public class VControllerApp extends Controller {
 	MulticastSocket socket;
 	static volatile boolean finished = false;
 	InetAddress group;
-
-	int port = 1234;
+	
+	int port;
+	String key;
 	String texto = "";
 
 	public VControllerApp() {
@@ -46,7 +50,15 @@ public class VControllerApp extends Controller {
 		direccion = "239.0.0.0";
 		// Aqui os lo he preparado para que le paseis el nombre del usuario y el puerto
 		// al que se va a conectar
-		chat("1234", "Pepe2");
+		if (VControllerCreateConnectChat.PORT != null)
+			chat(VControllerCreateConnectChat.PORT, getId());
+		else {
+			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCES_CHAT);
+			port = Integer.parseInt(chatParameters[0]);
+			key = chatParameters[1];
+			System.out.println("PUERTO Y KEY -> "+port + ""+ key);
+			chat(chatParameters[0], getId());
+		}
 	}
 
 	private void initialize() {

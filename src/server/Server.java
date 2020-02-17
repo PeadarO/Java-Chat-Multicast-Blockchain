@@ -19,8 +19,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
+
+import application.chat;
 
 public class Server implements Interfaz, Remote {
 
@@ -354,7 +358,7 @@ public class Server implements Interfaz, Remote {
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setString(1, password);
-			stmt.setString(2, cipher(key));
+			stmt.setString(2, key);
 			stmt.setInt(3, port);
 			stmt.executeUpdate();
 			stmt.close();
@@ -365,7 +369,7 @@ public class Server implements Interfaz, Remote {
 	}
 
 	public boolean isRegisteredPassword(String password) {
-		String query = "SELECT key FROM petitions WHERE password LIKE ?";
+		String query = "SELECT room_key FROM petitions WHERE password LIKE ?";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
 			stmt.setString(1, password);
@@ -406,5 +410,37 @@ public class Server implements Interfaz, Remote {
 			System.out.println("ERROR: We can't register server object!");
 			e.printStackTrace();
 		}
+	}
+
+	public String getKey() {
+		String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		String key = "";
+		for (int i = 0; i < 16; i++) {
+			key += letras.charAt((int) (Math.random() * 35));
+		}
+		return key;
+	}
+
+	public String[] getKeyAndPort(String password) {
+		String[] chatParameters = new String[2];
+		String query = "SELECT room_key, PORT FROM petitions WHERE password ='" + password + "'";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(query);
+			ResultSet rset = stmt.executeQuery();
+			if (rset.next()) {
+				chatParameters[0] = rset.getString("PORT");
+				chatParameters[1] = rset.getString("room_key");
+			}
+			System.out.println(chatParameters.toString());
+
+			rset.close();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return chatParameters;
+
 	}
 }

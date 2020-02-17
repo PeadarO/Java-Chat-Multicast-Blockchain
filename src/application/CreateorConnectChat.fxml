@@ -15,12 +15,12 @@
             <Label layoutX="16.0" layoutY="74.0" text="New Password:" />
             <Label layoutX="16.0" layoutY="244.0" text="Password:" />
             <TextField fx:id="txtNewPassword" layoutX="117.0" layoutY="69.0" prefHeight="27.0" prefWidth="145.0" style="-fx-focus-traversable: true;" styleClass="Textfield" stylesheets="@SecureApp.css" />
-            <Button fx:id="btnConnectRoom" layoutX="171.0" layoutY="290.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="91.0" styleClass="buttonAzul" stylesheets="@SecureApp.css" text="Connect" textAlignment="CENTER">
+            <Button fx:id="btnConnectRoom" layoutX="171.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickConnectRoom" prefHeight="29.0" prefWidth="91.0" styleClass="buttonAzul" stylesheets="@SecureApp.css" text="Connect" textAlignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
             <PasswordField fx:id="txtValidatorPassword" layoutX="117.0" layoutY="239.0" prefHeight="27.0" prefWidth="145.0" styleClass="Textfield" stylesheets="@SecureApp.css" />
-            <Button fx:id="btnCreateRoom" layoutX="171.0" layoutY="127.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="91.0" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Create" textAlignment="CENTER">
+            <Button fx:id="btnCreateRoom" layoutX="171.0" layoutY="127.0" mnemonicParsing="false" onAction="#clickCreateRoom" prefHeight="29.0" prefWidth="91.0" styleClass="buttonVerde" stylesheets="@SecureApp.css" text="Create" textAlignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
