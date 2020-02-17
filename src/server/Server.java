@@ -424,7 +424,6 @@ public class Server implements Interfaz, Remote {
 				chatParameters[0] = rset.getString("PORT");
 				chatParameters[1] = rset.getString("room_key");
 			}
-			System.out.println(chatParameters.toString());
 
 			rset.close();
 			stmt.close();
@@ -442,8 +441,6 @@ public class Server implements Interfaz, Remote {
 		try {
 			cipher = Cipher.getInstance(cI);
 			SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
-			byte[] decode = Base64.getDecoder().decode(skeySpec.getEncoded());
-
 			IvParameterSpec ivParameterSpec = new IvParameterSpec(iV.getBytes());
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivParameterSpec);
 			encrypted = cipher.doFinal(cleartext.getBytes());
@@ -477,7 +474,6 @@ public class Server implements Interfaz, Remote {
 			cipher = Cipher.getInstance(cI);
 			SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
 			IvParameterSpec ivParameterSpec = new IvParameterSpec(iV.getBytes());
-			System.out.println(encrypted);
 			byte[] enc = Base64.getDecoder().decode(encrypted);
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivParameterSpec);
 			byte[] decrypted = cipher.doFinal(enc);

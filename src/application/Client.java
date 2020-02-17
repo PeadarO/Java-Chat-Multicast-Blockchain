@@ -52,6 +52,7 @@ public class Client extends Application {
 			// lanzamos aplicacion visual
 			launch(args);
 			System.out.println("Closed Chat!");
+			System.exit(-1);
 
 		}
 	}

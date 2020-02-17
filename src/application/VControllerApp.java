@@ -42,10 +42,11 @@ public class VControllerApp extends Controller {
 	String key;
 	String texto = "";
 
-	/*
-	 * @FXML private void initialize() { lblUser.setText("Bienvenido " +
-	 * getId().toUpperCase()); }
-	 */
+	@FXML
+	private void initialize() {
+		lblUser.setText("Bienvenido " + getId().toUpperCase());
+	}
+
 	public VControllerApp() {
 		Server server = new Server();
 		this.server = server;
@@ -58,7 +59,6 @@ public class VControllerApp extends Controller {
 			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCESS_CHAT);
 			port = Integer.parseInt(chatParameters[0]);
 			key = chatParameters[1];
-			System.out.println("PUERTO Y KEY -> " + port + "" + key);
 			chat(chatParameters[0], getId());
 			// initialize();
 		}
@@ -129,7 +129,6 @@ public class VControllerApp extends Controller {
 		if (!isMessageEmpty) {
 
 			String message = txtMessage.getText();
-			System.out.println(message);
 			txtMessage.setText("");
 			message = name + ": " + message;
 			String encrypt = server.encrypt(key, message);
