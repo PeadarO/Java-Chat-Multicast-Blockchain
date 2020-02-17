@@ -40,7 +40,7 @@ public class Server implements Interfaz, Remote {
 	private final String alg;
 	// Definición del modo de cifrado a utilizar
 	private final String cI;
-	//Vector de inicializacion
+	// Vector de inicializacion
 	private final String iV;
 
 	private Connection connection;
@@ -156,9 +156,9 @@ public class Server implements Interfaz, Remote {
 		String query = "UPDATE users SET password = ?, email = ?, name = ? WHERE number LIKE '" + number + "'";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(query);
-			stmt.setString(1, password);
-			stmt.setString(2, name);
+			stmt.setString(1, cipher(password));
 			stmt.setString(2, email);
+			stmt.setString(3, name);
 			stmt.executeUpdate();
 			stmt.close();
 			return true;
@@ -436,7 +436,7 @@ public class Server implements Interfaz, Remote {
 
 	}
 
-	public String encrypt(String key, String cleartext){
+	public String encrypt(String key, String cleartext) {
 		Cipher cipher;
 		byte[] encrypted = null;
 		try {
@@ -448,7 +448,7 @@ public class Server implements Interfaz, Remote {
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivParameterSpec);
 			encrypted = cipher.doFinal(cleartext.getBytes());
 			return new String(Base64.getEncoder().encode(encrypted));
-			
+
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return "ERROR";
@@ -471,7 +471,7 @@ public class Server implements Interfaz, Remote {
 		}
 	}
 
-	public String decrypt(String key, String encrypted){
+	public String decrypt(String key, String encrypted) {
 		Cipher cipher;
 		try {
 			cipher = Cipher.getInstance(cI);
@@ -482,7 +482,7 @@ public class Server implements Interfaz, Remote {
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivParameterSpec);
 			byte[] decrypted = cipher.doFinal(enc);
 			return new String(decrypted);
-			
+
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return "ERROR";
@@ -502,7 +502,7 @@ public class Server implements Interfaz, Remote {
 			e.printStackTrace();
 			return "ERROR";
 		}
-		
+
 	}
 
 	public static void main(String[] args) {

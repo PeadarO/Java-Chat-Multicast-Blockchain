@@ -35,7 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Button fx:id="btnProfile" layoutX="639.0" layoutY="15.0" mnemonicParsing="false" onAction="#clickProfile" prefHeight="43.0" prefWidth="55.0" style="-fx-border-color: transparent;" stylesheets="@SecureApp.css" visible="false" />
+            <Button fx:id="btnProfile" layoutX="650.0" layoutY="18.0" mnemonicParsing="false" onAction="#clickProfile" opacity="0.0" prefHeight="42.0" prefWidth="35.0" />
 			</children>
 		</Pane>
 	</top>

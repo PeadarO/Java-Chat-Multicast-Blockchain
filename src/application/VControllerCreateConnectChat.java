@@ -60,7 +60,7 @@ public class VControllerCreateConnectChat extends Controller {
 						"Room Chat");
 				return "Successful enter in Room.";
 			} else {
-				alert(Alert.AlertType.ERROR, "", "", "");
+				alert(Alert.AlertType.ERROR, "Error with password", "Try again or introduce other password", "Maybe password incorrected!");
 			}
 		} else {
 			alert(AlertType.WARNING, "Error connecting to the room", "",

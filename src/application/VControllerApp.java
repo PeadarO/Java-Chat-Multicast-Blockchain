@@ -125,19 +125,23 @@ public class VControllerApp extends Controller {
 
 	@FXML
 	private void sendClicked(MouseEvent event) {
-		String message = txtMessage.getText();
-		System.out.println(message);
-		txtMessage.setText("");
-		message = name + ": " + message;
-		String encrypt = server.encrypt(key, message);
+		boolean isMessageEmpty = txtMessage.getText().isEmpty();
+		if (!isMessageEmpty) {
 
-		byte[] buffer = encrypt.getBytes();
-		DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, port);
-		try {
-			socket.send(datagram);
-		} catch (Exception ex) {
-			System.out.println("Error enviando" + ex);
+			String message = txtMessage.getText();
+			System.out.println(message);
+			txtMessage.setText("");
+			message = name + ": " + message;
+			String encrypt = server.encrypt(key, message);
 
+			byte[] buffer = encrypt.getBytes();
+			DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, port);
+			try {
+				socket.send(datagram);
+			} catch (Exception ex) {
+				System.out.println("Error enviando" + ex);
+
+			}
 		}
 	}
 
