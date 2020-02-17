@@ -47,7 +47,7 @@
                   <Image url="@../../Resources/registro.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="btnShowPassword" alignment="CENTER" layoutX="559.0" layoutY="71.0" mnemonicParsing="false" onAction="#clickShowInformation" prefHeight="40.0" prefWidth="125.0" stylesheets="@SecureApp.css" text="Show information" textFill="WHITE" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="71.0">
+            <Button fx:id="btnShowPassword" alignment="CENTER" layoutX="559.0" layoutY="71.0" mnemonicParsing="false" onAction="#clickShowInformation" prefHeight="40.0" prefWidth="125.0" stylesheets="@SecureApp.css" text="Show info" textFill="WHITE" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="71.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
