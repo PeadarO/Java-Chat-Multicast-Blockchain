@@ -39,7 +39,7 @@ public class VControllerApp extends Controller {
 	MulticastSocket socket;
 	static volatile boolean finished = false;
 	InetAddress group;
-	
+
 	int port;
 	String key;
 	String texto = "";
@@ -56,7 +56,7 @@ public class VControllerApp extends Controller {
 			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCES_CHAT);
 			port = Integer.parseInt(chatParameters[0]);
 			key = chatParameters[1];
-			System.out.println("PUERTO Y KEY -> "+port + ""+ key);
+			System.out.println("PUERTO Y KEY -> " + port + "" + key);
 			chat(chatParameters[0], getId());
 		}
 	}
@@ -85,7 +85,8 @@ public class VControllerApp extends Controller {
 					try {
 						socket.receive(datagram);
 						message = new String(buffer, 0, datagram.getLength(), "UTF-8");
-						texto += message + "\n";
+						String decrypt = server.decrypt(key, message);
+						texto += decrypt + "\n";
 						textoFinal.setText(texto);
 					} catch (IOException e) {
 						System.out.println("Socket closed!");
@@ -126,7 +127,9 @@ public class VControllerApp extends Controller {
 		System.out.println(message);
 		txtMessage.setText("");
 		message = name + ": " + message;
-		byte[] buffer = message.getBytes();
+		String encrypt = server.encrypt(key, message);
+
+		byte[] buffer = encrypt.getBytes();
 		DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, port);
 		try {
 			socket.send(datagram);
