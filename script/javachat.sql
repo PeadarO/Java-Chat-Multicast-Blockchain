@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-02-2020 a las 18:12:09
+-- Tiempo de generación: 17-02-2020 a las 18:38:48
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -27,28 +27,16 @@ USE `javachat`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `chat`
---
-
-DROP TABLE IF EXISTS `chat`;
-CREATE TABLE `chat` (
-  `idUsuarioEnv` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `idUsuarioRec` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `Mensaje` text COLLATE utf8_spanish_ci NOT NULL,
-  `fecha` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `petitions`
 --
 
 DROP TABLE IF EXISTS `petitions`;
-CREATE TABLE `petitions` (
+CREATE TABLE IF NOT EXISTS `petitions` (
   `password` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `room_key` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `PORT` int(10) NOT NULL
+  `PORT` int(10) NOT NULL,
+  PRIMARY KEY (`password`),
+  UNIQUE KEY `PORT` (`PORT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -57,7 +45,7 @@ CREATE TABLE `petitions` (
 
 INSERT INTO `petitions` (`password`, `room_key`, `PORT`) VALUES
 ('12345', 'P0ESJDIM0S8XFVCO', 5555),
-('54321', 'HA6SB1IWOHP2NABT', 5555),
+('5432', 'HA6SB1IWOHP2NABT', 5544),
 ('98765', 'QA4JGBV2114I6YV6', 8888);
 
 -- --------------------------------------------------------
@@ -67,9 +55,11 @@ INSERT INTO `petitions` (`password`, `room_key`, `PORT`) VALUES
 --
 
 DROP TABLE IF EXISTS `resetpassword`;
-CREATE TABLE `resetpassword` (
+CREATE TABLE IF NOT EXISTS `resetpassword` (
   `number` int(9) NOT NULL,
-  `codigo` varchar(255) COLLATE utf8_spanish_ci NOT NULL
+  `codigo` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  UNIQUE KEY `number_2` (`number`),
+  KEY `number` (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -86,12 +76,13 @@ INSERT INTO `resetpassword` (`number`, `codigo`) VALUES
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `number` int(9) NOT NULL,
   `email` varchar(55) COLLATE utf8_spanish_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `status` tinyint(1) NOT NULL
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -108,23 +99,6 @@ INSERT INTO `users` (`number`, `email`, `password`, `name`, `status`) VALUES
 (4321, 'we@we.com', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'we', 0),
 (54321, 'w@s.com', '20f3765880a5c269b747e1e906054a4b4a3a991259f1e16b5dde4742cec2319a', 'w', 0),
 (123456789, 'powerkun19@gmail.com', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'javi', 0);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `resetpassword`
---
-ALTER TABLE `resetpassword`
-  ADD UNIQUE KEY `number_2` (`number`),
-  ADD KEY `number` (`number`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`number`);
 
 --
 -- Restricciones para tablas volcadas
