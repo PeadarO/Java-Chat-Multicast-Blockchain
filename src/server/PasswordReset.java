@@ -6,9 +6,7 @@
 package server;
 
 import java.util.Properties;
-import java.util.Random;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -23,7 +21,6 @@ import javax.mail.internet.MimeMessage;
 public class PasswordReset {
 
 	public boolean sendMailReset(String to2, String code) {
-
 		String to = to2;
 		String from = "alecruzdev@gmail.com";
 		String host = "smtp.gmail.com";
@@ -35,13 +32,9 @@ public class PasswordReset {
 		properties.put("mail.smtp.auth", "true");
 
 		Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-
 			protected PasswordAuthentication getPasswordAuthentication() {
-
 				return new PasswordAuthentication("securechatUtad@gmail.com", "utadsecure");
-
 			}
-
 		});
 
 		// Used to debug SMTP issues
@@ -50,7 +43,6 @@ public class PasswordReset {
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
-
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject("Secure Chat Password");

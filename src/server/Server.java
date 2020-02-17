@@ -21,25 +21,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.util.Callback;
 
 public class Server implements Interfaz, Remote {
 
-    private Connection connection;
-    private File config;
-    private Properties properties;
-    private InputStream input;
-    private OutputStream output;
-    private boolean login;
-    private int correctNumber;
-    private TableView tableConnections;
+	private Connection connection;
+	private File config;
+	private Properties properties;
+	private InputStream input;
+	private OutputStream output;
+	private boolean login;
+	private int correctNumber;
 
     public Server() {
         config = new File("src/configuration.ini");
@@ -264,55 +255,8 @@ public class Server implements Interfaz, Remote {
 
     }
 
-    @SuppressWarnings("unchecked")
-    public void readConnections(String query, TableView tableView, ObservableList<ObservableList> data)
-            throws RemoteException {
-        clearTableView(tableView, data);
-
-        try {
-            ResultSet rs = getConnection().createStatement().executeQuery(query);
-            // table column added dynamically
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                final int j = i;
-                TableColumn columnData = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-
-                columnData.setCellValueFactory(
-                        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                    }
-                });
-
-                tableView.getColumns().addAll(columnData);
-
-                // data added to ObservableList
-                while (rs.next()) {
-                    ObservableList<String> row = FXCollections.observableArrayList();
-                    for (int z = 1; z <= rs.getMetaData().getColumnCount(); z++) {
-                        row.add(rs.getString(z));
-                    }
-                    data.add(row);
-                }
-                // added to tableview
-                tableView.setItems(data);
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    private void clearTableView(TableView tableView, ObservableList<ObservableList> data) {
-        data.clear();
-        tableView.getColumns().clear();
-        tableView.getItems().clear();
-    }
-
-    public void setTableConnections(TableView<?> tableView) {
-        this.tableConnections = tableView;
-    }
-
-    @Override
-    public boolean resetPassword(int number) throws RemoteException {
+	@Override
+	public boolean resetPassword(int number) throws RemoteException {
 
         String query = "INSERT INTO resetPassword (number,codigo) VALUES (?, ?)";
         try {
@@ -405,24 +349,59 @@ public class Server implements Interfaz, Remote {
         return true;
     }
 
-    public static void main(String[] args) {
-        Registry reg = null;
-        try {
-            System.out.println("Creating register of objects, listening in PORT: 5557");
-            reg = LocateRegistry.createRegistry(5557);
-        } catch (Exception e) {
-            System.out.println("ERROR: We can't create server! ");
-            System.out.println("Can't use port 5557, because is in use!");
-            System.exit(0);
-        }
-        System.out.println("Creating server object!");
-        Server serverObject = new Server();
-        try {
-            System.out.println("Registered server object!");
-            System.out.println("");
-            System.out.println("Unique name: Chat");
-            reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
-        } catch (Exception e) {
+	public boolean insertNewChatPassword(String password, String key, int port) {
+		String query = "INSERT INTO petitions (password,room_key, PORT) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, password);
+			stmt.setString(2, cipher(key));
+			stmt.setInt(3, port);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean isRegisteredPassword(String password) {
+		String query = "SELECT key FROM petitions WHERE password LIKE ?";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, password);
+			ResultSet rset = stmt.executeQuery();
+			boolean exist = rset.next();
+			rset.close();
+			stmt.close();
+			if (exist)
+				return true;
+			else
+				return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static void main(String[] args) {
+		Registry reg = null;
+		try {
+			System.out.println("Creating register of objects, listening in PORT: 5557");
+			reg = LocateRegistry.createRegistry(5557);
+		} catch (Exception e) {
+			System.out.println("ERROR: We can't create server! ");
+			System.out.println("Can't use port 5557, because is in use!");
+			System.exit(0);
+		}
+		System.out.println("Creating server object!");
+		Server serverObject = new Server();
+		try {
+			System.out.println("Registered server object!");
+			System.out.println("");
+			System.out.println("Unique name: Chat");
+			reg.rebind("Chat", (Interfaz) UnicastRemoteObject.exportObject(serverObject, 0));
+		} catch (Exception e) {
 
             System.out.println("ERROR: We can't register server object!");
             e.printStackTrace();

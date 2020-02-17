@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-02-2020 a las 19:48:20
+-- Tiempo de generación: 17-02-2020 a las 14:45:21
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -27,15 +27,50 @@ USE `javachat`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `peticiones`
+-- Estructura de tabla para la tabla `chat`
 --
 
-DROP TABLE IF EXISTS `peticiones`;
-CREATE TABLE IF NOT EXISTS `peticiones` (
-  `ref_1` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `ref_2` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `status` tinyint(1) NOT NULL
+DROP TABLE IF EXISTS `chat`;
+CREATE TABLE IF NOT EXISTS `chat` (
+  `idUsuarioEnv` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `idUsuarioRec` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `Mensaje` text COLLATE utf8_spanish_ci NOT NULL,
+  `fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `petitions`
+--
+
+DROP TABLE IF EXISTS `petitions`;
+CREATE TABLE IF NOT EXISTS `petitions` (
+  `password` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `room_key` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `PORT` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resetpassword`
+--
+
+DROP TABLE IF EXISTS `resetpassword`;
+CREATE TABLE IF NOT EXISTS `resetpassword` (
+  `number` int(9) NOT NULL,
+  `codigo` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  UNIQUE KEY `number_2` (`number`),
+  KEY `number` (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `resetpassword`
+--
+
+INSERT INTO `resetpassword` (`number`, `codigo`) VALUES
+(98, 'a8c2709c9d4bbb87e5d19dedffe0364174700ff7ff9aa8de56dcdc99018d1eb6');
 
 -- --------------------------------------------------------
 
@@ -44,15 +79,6 @@ CREATE TABLE IF NOT EXISTS `peticiones` (
 --
 
 DROP TABLE IF EXISTS `users`;
-DROP TABLE IF EXISTS `resetPassword`;
-
-
-CREATE TABLE IF NOT EXISTS `resetPassword`(
- `number` int(9) NOT NULL unique,
- `codigo` varchar(255) NOT NULL
-);
-select * from resetPassword;
-
 CREATE TABLE IF NOT EXISTS `users` (
   `number` int(9) NOT NULL,
   `username` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
@@ -65,19 +91,25 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Volcado de datos para la tabla `users`
 --
-ALTER TABLE resetPassword
-ADD FOREIGN KEY (number) REFERENCES users(number);
-
-INSERT INTO `resetPassword` (`number`, `codigo`) VALUES
-(123, 'hola');
-
-
-Update users inner join resetPassword  on users.number = resetPassword.number set users.password = 'prueba' where resetPassword.codigo ='hola';
 
 INSERT INTO `users` (`number`, `username`, `password`, `name`, `status`) VALUES
-(123, 'w', '50e721e49c013f00c62cf59f2163542a9d8df02464efeb615d31051b0fddc326', 'w', 0),
+(90, 'javier@javier.gmail.com', '69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763', 'Javier', 1),
+(98, 'canarygo1@gmail.com', '3514acf61732f662da19625f7fe781c3e483f2dce8506012f3bb393f5003e105', 'wer', 0),
+(123, 'w', 'prueba', 'w', 0),
 (987, 'mic', '224948ca810fc2bc9e3d80c0b1129fe2487fa4e307961001ab8443db82f7bb69', 'mic', 0),
-(4321, 'we', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'we', 0);
+(4321, 'we@we.com', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'we', 0),
+(54321, 'w@s.com', '20f3765880a5c269b747e1e906054a4b4a3a991259f1e16b5dde4742cec2319a', 'w', 0),
+(123456789, 'powerkun19@gmail.com', 'dc7c811b9561739d9b75bb3e9e1715970a868834e62251b0b9ca02e74d0f42c9', 'javi', 0);
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `resetpassword`
+--
+ALTER TABLE `resetpassword`
+  ADD CONSTRAINT `resetpassword_ibfk_1` FOREIGN KEY (`number`) REFERENCES `users` (`number`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 import java.util.Optional;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -21,7 +18,6 @@ import server.Server;
 public class Controller {
 	private Server server;
 	private static String userlogged;
-	private ObservableList<ObservableList> data;
 	static protected int selecionado;
 
 	public Server getServer() {
@@ -36,10 +32,9 @@ public class Controller {
 		Server server = new Server();
 		this.server = server;
 		new FXMLLoader();
-		data = FXCollections.observableArrayList();
 
 	}
-	
+
 	public String getusernameLogged(String myusername) {
 		userlogged = myusername;
 		return userlogged;
@@ -49,8 +44,7 @@ public class Controller {
 		return userlogged;
 	}
 
-	public void openWindow(ActionEvent event, Node node, String fxml, String title, boolean hide,
-			int selecionado) {
+	public void openWindow(ActionEvent event, Node node, String fxml, String title, boolean hide) {
 		Parent root;
 		try {
 			root = FXMLLoader.load(getClass().getResource(fxml));
@@ -97,16 +91,9 @@ public class Controller {
 		return option;
 	}
 
-	// Permite borra el contenido de una tabla concreta
-	public void clearTable(TableView tableView) {
-		data.clear();
-		tableView.getColumns().clear();
-		tableView.getItems().clear();
-	}
-	
-	public void cerrarSesion(ActionEvent event,int number) {
+	public void cerrarSesion(ActionEvent event, int number) {
 		server.logout(number);
-		openWindow(event, (Node) event.getSource(), "Login.fxml", "Inicar sesion", true, -1);
+		openWindow(event, (Node) event.getSource(), "Login.fxml", "Inicar sesion", true);
 		cancelar(event);
 	}
 
