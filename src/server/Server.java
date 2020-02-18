@@ -21,9 +21,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 
@@ -36,9 +34,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Server implements Interfaz, Remote {
 
-	// Definición del tipo de algoritmo a utilizar (AES, DES, RSA)
+	// Definiciï¿½n del tipo de algoritmo a utilizar (AES, DES, RSA)
 	private final String alg;
-	// Definición del modo de cifrado a utilizar
+	// Definiciï¿½n del modo de cifrado a utilizar
 	private final String cI;
 	// Vector de inicializacion
 	private final String iV;
@@ -381,7 +379,7 @@ public class Server implements Interfaz, Remote {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 	public boolean isRegisteredPassword(String password) {

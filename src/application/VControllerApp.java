@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -53,15 +54,12 @@ public class VControllerApp extends Controller {
 		direccion = "239.0.0.0";
 		// Aqui os lo he preparado para que le paseis el nombre del usuario y el puerto
 		// al que se va a conectar
-		if (VControllerCreateConnectChat.PORT != null)
-			chat(VControllerCreateConnectChat.PORT, getId());
-		else {
-			String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCESS_CHAT);
-			port = Integer.parseInt(chatParameters[0]);
-			key = chatParameters[1];
-			chat(chatParameters[0], getId());
-			// initialize();
-		}
+
+		String[] chatParameters = server.getKeyAndPort(VControllerCreateConnectChat.ACCESS_CHAT);
+		port = Integer.parseInt(chatParameters[0]);
+		key = chatParameters[1];
+		chat(chatParameters[0], getId());
+		// initialize();
 
 	}
 

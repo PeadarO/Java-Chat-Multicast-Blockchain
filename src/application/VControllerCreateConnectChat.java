@@ -3,10 +3,10 @@ package application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import server.Server;
 
@@ -41,9 +41,11 @@ public class VControllerCreateConnectChat extends Controller {
 		if (!isNewPasswordEmpty && !isPortEmpty) {
 			String key = server.getKey();
 			int port = Integer.parseInt(txtPort.getText());
-			server.insertNewChatPassword(txtNewPassword.getText(), key, port);
+			boolean condicion = server.insertNewChatPassword(txtNewPassword.getText(), key, port);
+			System.out.println("condicion: " + condicion);
 			VControllerCreateConnectChat.PORT = txtPort.getText();
-			changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(), "RoomChat.fxml", "Room Chat");
+			// changeStage(event, (Stage) ((Node) event.getSource()).getScene().getWindow(),
+			// "RoomChat.fxml", "Room Chat");
 			return "Created room in port:" + txtPort.getText();
 		} else {
 			alert(AlertType.WARNING, "Error creating room", "", "Please empty the other textfield to create room.");
@@ -60,7 +62,8 @@ public class VControllerCreateConnectChat extends Controller {
 						"Room Chat");
 				return "Successful enter in Room.";
 			} else {
-				alert(Alert.AlertType.ERROR, "Error with password", "Try again or introduce other password", "Maybe password incorrected!");
+				alert(Alert.AlertType.ERROR, "Error with password", "Try again or introduce other password",
+						"Maybe password incorrected!");
 			}
 		} else {
 			alert(AlertType.WARNING, "Error connecting to the room", "",
